@@ -58,9 +58,15 @@
           <div class="store-td">{{picked.productName}}</div>
           <div class="store-td">{{picked.availableQuantity | number}} {{picked.productConfiguration.name}}</div>
           <div class="store-td">{{picked.reOrderLevel}} {{picked.productConfiguration.name}}</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#{{picked.price}}/{{picked.productConfiguration.name}}</div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{picked.costPrice}}/{{picked.productConfiguration.name}}
+          </div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{picked.availableQuantity*picked.costPrice | number}}
+          </div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{picked.price}}/{{picked.productConfiguration.name}}
+          </div>
         </div>
         <div class="store-td store-td-actions">
           <div class="table-list col-xs-1 action-placeholder">
@@ -121,8 +127,12 @@
             </div>
             <span>{{picked.productConfiguration.name}}</span>
           </div>
-          <div class="store-td">#5/{{picked.productConfiguration.name}}</div>
-          <div class="store-td">#300,000</div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{picked.costPrice}}/{{picked.productConfiguration.name}}
+          </div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{picked.costPrice* picked.quantityRequired}}
+          </div>
           <div class="store-td">
             <div class="btc-body-item item-action">
               <i class="fa fa-2x fa-pencil-square" aria-hidden="true"></i>

@@ -84,7 +84,7 @@
 
   .disabled {
     cursor: not-allowed;
-    background: rgba(168, 220, 255, 0.52);
+    // background: rgba(168, 220, 255, 0.52);
   }
 }
 
@@ -124,6 +124,7 @@
   margin: 5px;
   font-size: 10px;
   cursor: pointer;
+
   a {
     margin-right: 5px;
   }
@@ -133,6 +134,7 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+
   .caution-note {
     background: rgba(254, 70, 70, 0.13);
     border-radius: 3px;
@@ -150,7 +152,12 @@
   }
 }
 
-.btm-action{
-    display: flex !important;
-    justify-content: center !important;
+.btm-action {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.3;
 }

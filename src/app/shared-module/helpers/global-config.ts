@@ -83,7 +83,7 @@ export const API_LIVE = 'https://apmisapilive.azurewebsites.net';
 export const API_LOCALHOST = 'http://localhost:3031';
 export const USE_LOGIN_ENCRYPTION = false;
 export const USE_FACILITY_ACTIVATION = true;
-export const APMIS_STORE_PAGINATION_LIMIT = 1;
+export const APMIS_STORE_PAGINATION_LIMIT = 10;
 export const ApointmentScheduleStatus = {
 	ACTIVE: 'Active',
 	SUSPENDED: 'Suspended',

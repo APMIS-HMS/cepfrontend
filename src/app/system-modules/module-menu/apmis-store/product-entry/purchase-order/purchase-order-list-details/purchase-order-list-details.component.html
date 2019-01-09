@@ -41,8 +41,12 @@
           <div class="store-td">{{order.productName}}</div>
           <div class="store-td">{{order.productPackType}}</div>
           <div class="store-td">{{order.quantity}} {{order.productPackType}}</div>
-          <div class="store-td">#{{order.costPrice}}/{{order.productPackType}}</div>
-          <div class="store-td">#{{order.quantity * order.costPrice}}</div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{order.costPrice}}/{{order.productPackType}}
+          </div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{order.quantity * order.costPrice}}
+          </div>
         </div>
       </div>
     </div>

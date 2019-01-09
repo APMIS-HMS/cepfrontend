@@ -1,46 +1,10 @@
 <div class="supplierBase">
   <div class="suppSearch">
-      <app-apmis-store-supplier-search (emitCurrentPage)="loadCurrentPage($event)"></app-apmis-store-supplier-search>
-    <!-- <div class="src-content">
-      <div class="src-item src-input-wrap">
-        <img class="src-ico" src="assets/images/report_icons/search-small.svg" />
-        <input class="src-input" type="text">
-      </div>
-      <ul>
-        <li class="src-item">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <li class="src-item">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <li class="src-item">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <li class="src-item">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <li class="src-item selected-li">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <li class="src-item">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <div class="ul-action">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-          <span>Add Supplier</span>
-        </div>
-      </ul>
-    </div> -->
+    <app-apmis-store-supplier-search (emitCurrentPage)="loadCurrentPage($event)"></app-apmis-store-supplier-search>
   </div>
 
   <div *ngIf="main_content" class="contentLeftGrid">
-    <div class="tbl-btn-action" >
+    <div class="tbl-btn-action">
       <div class="action-pad">
         <div class="new-btn-blue" (click)="onShowNewSupplier()">
           <i class="fa fa-plus" aria-hidden="true"></i>
@@ -147,56 +111,25 @@
 
       <div class="store-tbody">
         <div class="store-pre-tr">
-          <div class="store-tr">
+          <div class="store-tr" *ngFor="let invoice of invoices">
             <div class="store-td store-td-actions">
               <input type="checkbox">
             </div>
             <div class="invoice-tr-in">
-              <div class="store-td">VCE1290</div>
-              <div class="store-td">02/11/2019</div>
-              <div class="store-td green-lbl">Paid</div>
-              <div class="store-td">#300,000</div>
-              <div class="store-td">
-                <div class="inv-action">
-                  <div (click)="viewInvoice()" class="ft-btn btn-act-margin">
-                    <span>View Invoice</span>
-                  </div>
-                </div>
+              <div class="store-td">{{invoice.invoiceNumber}}</div>
+              <div class="store-td">{{invoice.createdAt|date:'shortDate'}}</div>
+              <div class="store-td red-lbl">
+                <span *ngIf="invoice.amountPaid >= invoice.invoiceAmount" [class.green-lbl]="invoice.amountPaid>= invoice.invoiceAmount">Paid></span>
+                <span *ngIf="invoice.amountPaid === 0" [class.red-lbl]="invoice.amountPaid === 0">Unpaid</span>
+                <span *ngIf="invoice.amountPaid > 0 && invoice.amountPaid < invoice.invoiceAmount" [class.orange-lbl]="invoice.amountPaid > 0 && invoice.amountPaid < invoice.invoiceAmount">Partial
+                  Payment</span>
               </div>
-            </div>
-          </div>
-
-          <div class="store-tr">
-            <div class="store-td store-td-actions">
-              <input type="checkbox">
-            </div>
-            <div class="invoice-tr-in">
-              <div class="store-td">ICE1234</div>
-              <div class="store-td">02/11/2019</div>
-              <div class="store-td red-lbl">Unpaid</div>
-              <div class="store-td">#300,000</div>
               <div class="store-td">
-                <div class="inv-action">
-                  <div class="ft-btn btn-act-margin">
-                    <span>View Invoice</span>
-                  </div>
-                </div>
+                <app-apmis-naira></app-apmis-naira>{{invoice.invoiceAmount|number}}
               </div>
-            </div>
-          </div>
-
-          <div class="store-tr">
-            <div class="store-td store-td-actions">
-              <input type="checkbox">
-            </div>
-            <div class="invoice-tr-in">
-              <div class="store-td">INV7890</div>
-              <div class="store-td">02/11/2019</div>
-              <div class="store-td orange-lbl">Partial Payment</div>
-              <div class="store-td">#20,000 of #240,000</div>
               <div class="store-td">
                 <div class="inv-action">
-                  <div class="ft-btn btn-act-margin">
+                  <div (click)="viewInvoice(invoice)" class="ft-btn btn-act-margin">
                     <span>View Invoice</span>
                   </div>
                 </div>
@@ -205,6 +138,7 @@
           </div>
         </div>
       </div>
+      <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total"></app-apmis-pagination>
     </div>
 
     <div class="div-space"></div>
@@ -248,14 +182,17 @@
       </div>
     </div>
     <hr>
-    <div class="pur-wrap">
+    <div class="pur-wrap" *ngFor="let order of orders">
       <div class="pur-con-wrap">
         <span>Date Generated</span>
-        <h3>Tuesday 27th November 2018</h3>
+        <h3>{{order.createdAt| date:'fullDate'}}</h3>
       </div>
       <div class="pur-con-wrap">
         <span>Status</span>
-        <h3>Pending</h3>
+        <h3>
+          <span *ngIf="!order.isSupplied">Pending</span>
+          <span *ngIf="order.isSupplied">Supplied</span>
+        </h3>
       </div>
       <div class="pur-con-wrap">
         <span>Action</span>
@@ -271,8 +208,7 @@
   </div>
 
 
-
-
   <div *ngIf="showViewInvoice" class="modal-overlay">
-    <app-view-invoice (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-view-invoice>
+    <app-view-invoice [loginEmployeeId]="loginEmployee._id" [selectedInvoice]="selectedInvoice" [invoiceProduct]="invoiceProduct"
+      (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-view-invoice>
   </div>

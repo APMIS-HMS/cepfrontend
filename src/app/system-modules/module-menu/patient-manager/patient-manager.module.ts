@@ -1,3 +1,4 @@
+import { DrugInteractionService } from './patientmanager-detailpage/new-patient-prescription/services/drug-interaction.service';
 // import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -98,7 +99,6 @@ import { PrescriptionHistoryComponent } from './patientmanager-detailpage/new-pa
 import { DrugSearchComponent } from './patientmanager-detailpage/new-patient-prescription/drug-search/drug-search.component';
 import { GenBillSearchComponent } from './patientmanager-detailpage/new-patient-prescription/prescription-bill/gen-bill-search/gen-bill-search.component';
 
-
 @NgModule({
 	declarations: [
 		PatientManagerComponent,
@@ -178,6 +178,8 @@ import { GenBillSearchComponent } from './patientmanager-detailpage/new-patient-
 		ScopeLevelService,
 		FacilityCompanyCoverService,
 		LabEventEmitterService,
-		ImmunizationRecordService]
+		ImmunizationRecordService,
+		DrugInteractionService
+	]
 })
 export class PatientManagerModule {}

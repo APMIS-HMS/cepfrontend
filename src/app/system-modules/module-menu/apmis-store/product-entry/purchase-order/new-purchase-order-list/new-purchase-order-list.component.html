@@ -83,9 +83,15 @@
           <div class="store-td">{{picked.productName}}</div>
           <div class="store-td">{{picked.availableQuantity | number}} {{picked.productConfiguration.name}}</div>
           <div class="store-td">{{picked.reOrderLevel}} {{picked.productConfiguration.name}}</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#{{picked.price}}/{{picked.productConfiguration.name}}</div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{picked.costPrice}}/{{picked.productConfiguration.name}}
+          </div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{picked.costPrice * picked.availableQuantity | number}}
+          </div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{picked.price|number}}/{{picked.productConfiguration.name}}
+          </div>
         </div>
         <div class="store-td store-td-actions">
           <div class="table-list col-xs-1 action-placeholder">

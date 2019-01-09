@@ -123,6 +123,10 @@
                 <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe
                     Drug
                 </div>
+                <div (click)="menuPrescriptions2_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">
+                    Old Prescribe
+                    Drug
+                </div>
                 <div (click)="menuExternalPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription
                     List
                 </div>
@@ -170,6 +174,10 @@
                 <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe
                     Drug
                 </div>
+                <div (click)="menuPrescriptions2_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">
+                    Old Prescribe
+                    Drug
+                </div>
                 <div (click)="menuExternalPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription
                     List
                 </div>
@@ -189,7 +197,7 @@
         <app-patient-vitals [patient]="patient" *ngIf="menuVitals"></app-patient-vitals>
         <app-doc-uploads [patient]=patient *ngIf="menuUploads"></app-doc-uploads>
         <app-new-patient-prescription *ngIf="menuPrescription"></app-new-patient-prescription>
-        <!-- <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription> -->
+        <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription2"></app-patient-prescription>
         <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
         <app-patient-immunization [patient]="patient" *ngIf="menuImmunization"></app-patient-immunization>
         <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
@@ -202,8 +210,9 @@
 
 
     <div *ngIf="mergePatient" class="modal-overlay">
-            <app-unknown-patient-merge [selectedPatient]="patient" (personValueChanged)="onPersonValueUpdated($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-unknown-patient-merge>
-        </div>   
+        <app-unknown-patient-merge [selectedPatient]="patient" (personValueChanged)="onPersonValueUpdated($event)"
+            (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-unknown-patient-merge>
+    </div>
     <div *ngIf="addVitalsPop" class="modal-overlay">
         <app-add-vitals [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
     </div>

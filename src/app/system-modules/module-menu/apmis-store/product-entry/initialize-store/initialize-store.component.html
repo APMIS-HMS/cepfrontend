@@ -19,14 +19,16 @@
       <span class="bar"></span>
       <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Product</label>
       <ul class="search-sugestions" *ngIf="(showProduct && productConfigs.length > 0)">
-        <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}</li>
+        <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}
+          <i *ngIf="config.isVented" class="fa fa-check-circle fa-1x initialized-product"></i>
+        </li>
       </ul>
     </div>
     <div class="search-noResult-blue" *ngIf="searchHasBeenDone === true">
       <span>Product configuration not found <i (click)="configureProduct()">- Configure</i></span>
     </div>
   </div>
-  <div [class.disabled]="selectedProduct===undefined" (click)="addProduct()" class="new-btn-solid-blue">
+  <div [class.disabled]="selectedProduct===undefined || selectedCategoryName?.length < 3" (click)="addProduct()" class="new-btn-solid-blue">
     <span>Add to List</span>
   </div>
 </div>
@@ -47,7 +49,7 @@
     </div>
   </div>
 
-  <form  [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
     <div formArrayName="productArray">
       <div class="store-tbody">
         <div *ngFor="let picked of productForm['controls'].productArray['controls']; let i = index;">
@@ -69,8 +71,8 @@
                 </div>
                 <div class="store-td">
                   <div class="InputGroup input-space">
-                    <input [readOnly]=true formControlName="totalCostPrice" min="0" class="customInput" type="number" placeholder="&#8358;300,000 "
-                      required>
+                    <input [readOnly]=true formControlName="totalCostPrice" min="0" class="customInput" type="number"
+                      placeholder="&#8358;300,000 " required>
                     <span class="highlight"></span>
                   </div>
                 </div>
@@ -175,13 +177,50 @@
       </div>
     </div>
     <div class="formWrap">
-      <div [class.disabled]="selectedProduct===undefined" (click)="save(productForm.value, selectedProduct)" class="new-btn-solid-blue">
-      <span>Add Product</span>
+      <div [class.disabled]="selectedProduct===undefined || saving===true" (click)="save()" class="new-btn-solid-blue">
+        <span>Add Product</span>
+      </div>
     </div>
-    </div>
-    
+
   </form>
 
   <div *ngIf="showConfigureProduct" class="modal-overlay">
     <app-product-config-popup (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-product-config-popup>
   </div>
+</div>
+
+<div class="store-table" style="margin-top:20px">
+  <div class="store-thead">
+    <div class="store-tr">
+      <div class="store-th store-td-actions"></div>
+      <div class="store-tr-in">
+        <div class="store-th">Product </div>
+        <div class="store-th">Total Quantity</div>
+        <div class="store-  th">Cost Price</div>
+        <div class="store-th">Total Cost Price</div>
+        <div class="store-th">Margin</div>
+        <div class="store-th">Recommended Selling Price</div>
+      </div>
+    </div>
+  </div>
+  <div class="store-tbody">
+    <div class="store-tr" *ngFor="let picked of existingProducts; let i = index;">
+      <div class="store-th store-td-actions"></div>
+      <div class="store-tr-in">
+        <div class="store-td">{{picked.productObject.name}}</div>
+        <div class="store-td">{{picked.totalQuantity|number}}</div>
+        <div class="store-td">
+          <app-apmis-naira></app-apmis-naira>{{picked.costPrice|number}}
+        </div>
+        <div class="store-td"><span *ngIf="picked.costPrice">
+            <app-apmis-naira></app-apmis-naira>{{picked.totalQuantity * picked.costPrice | number}}
+          </span></div>
+        <div class="store-td">{{picked.margin|number}}</div>
+        <div class="store-td">
+          <app-apmis-naira></app-apmis-naira>{{picked.price?.price | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total"></app-apmis-pagination>
+</div>

@@ -49,8 +49,12 @@
           <div class="store-td">{{product.productName}}</div>
           <div class="store-td">{{product.productConfiguration.name}}</div>
           <div class="store-td">{{product.quantity| number}} {{product.productConfiguration.name}}</div>
-          <div class="store-td">#5/{{product.productConfiguration.name}}</div>
-          <div class="store-td">#300,000</div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{product.costPrice}}/{{product.productConfiguration.name}}
+          </div>
+          <div class="store-td">
+            <app-apmis-naira></app-apmis-naira>{{product.quantity*product.costPrice}}
+          </div>
         </div>
       </div>
     </div>

@@ -46,65 +46,24 @@
 
   <div class="store-tbody">
     <div class="store-pre-tr">
-      <div class="store-tr">
+      <div class="store-tr" *ngFor="let invoice of invoices">
         <div class="store-td store-td-actions">
           <input type="checkbox">
         </div>
         <div class="invoice-tr-in">
-          <div class="store-td">IV/890</div>
-          <div class="store-td">Sidmach Drug Supplier</div>
-          <div class="store-td">02/11/2019</div>
-          <div class="store-td green-lbl">Paid</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">
-            <div class="inv-action">
-              <div (click)="viewInvoice()" class="ft-btn btn-act-margin">
-                <span>View Invoice</span>
-              </div>
-            </div>
+          <div class="store-td">{{invoice.invoiceNumber}}</div>
+          <div class="store-td">{{invoice.supplierObject?.supplier.name}}</div>
+          <div class="store-td">{{invoice.createdAt | date:'fullDate'}}</div>
+          <div class="store-td green-lbl">
+            <span *ngIf="invoice.amountPaid >= invoice.invoiceAmount" [class.green-lbl]="invoice.amountPaid>= invoice.invoiceAmount">Paid></span>
+            <span *ngIf="invoice.amountPaid === 0" [class.red-lbl]="invoice.amountPaid === 0">Unpaid</span>
+            <span *ngIf="invoice.amountPaid > 0 && invoice.amountPaid < invoice.invoiceAmount" [class.orange-lbl]="invoice.amountPaid > 0 && invoice.amountPaid < invoice.invoiceAmount">Partial
+              Payment</span>
           </div>
-        </div>
-        <div class="store-th store-td-actions">
-
-        </div>
-      </div>
-
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <input type="checkbox">
-        </div>
-        <div class="invoice-tr-in">
-          <div class="store-td">IV/890/64</div>
-          <div class="store-td">Sidmach Drug Supplier</div>
-          <div class="store-td">02/11/2019</div>
-          <div class="store-td red-lbl">Unpaid</div>
-          <div class="store-td">#300,000</div>
+          <div class="store-td">#{{invoice.invoiceAmount | number}}</div>
           <div class="store-td">
             <div class="inv-action">
-              <div class="ft-btn btn-act-margin">
-                <span>View Invoice</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="store-th store-td-actions">
-
-        </div>
-      </div>
-
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <input type="checkbox">
-        </div>
-        <div class="invoice-tr-in">
-          <div class="store-td">IV/890/22</div>
-          <div class="store-td">Sidmach Drug Supplier</div>
-          <div class="store-td">02/11/2019</div>
-          <div class="store-td orange-lbl">Partial Payment</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">
-            <div class="inv-action">
-              <div class="ft-btn btn-act-margin">
+              <div (click)="viewInvoice(invoice)" class="ft-btn btn-act-margin">
                 <span>View Invoice</span>
               </div>
             </div>
@@ -116,9 +75,11 @@
       </div>
     </div>
   </div>
+  <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total"></app-apmis-pagination>
 </div>
 
 <app-new-invoice-entry *ngIf="!InvoiceEntryLanding"></app-new-invoice-entry>
 <div *ngIf="showViewInvoice" class="modal-overlay">
-  <app-view-invoice (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-view-invoice>
+  <app-view-invoice [loginEmployeeId]="loginEmployee._id" [selectedInvoice]="selectedInvoice" [invoiceProduct]="invoiceProduct"
+    (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-view-invoice>
 </div>

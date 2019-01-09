@@ -21,7 +21,8 @@ import {
 	InventoryService,
 	ProductTypeService,
 	SupplierService,
-	PurchaseOrderService
+	PurchaseOrderService,
+	PurchaseEntryService
 } from 'app/services/facility-manager/setup';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { StoreGlobalUtilService } from './store-utils/global-service';
@@ -44,37 +45,50 @@ import { ConfigProductComponent } from './apmis-store-product/product-conguratio
 import { NewPurchaseListComponent } from './product-entry/purchase-list/new-purchase-list/new-purchase-list.component';
 import { PurchaseListDetailsComponent } from './product-entry/purchase-list/purchase-list-details/purchase-list-details.component';
 import { NewPurchaseOrderListComponent } from './product-entry/purchase-order/new-purchase-order-list/new-purchase-order-list.component';
+// tslint:disable-next-line:max-line-length
 import { PurchaseOrderListDetailsComponent } from './product-entry/purchase-order/purchase-order-list-details/purchase-order-list-details.component';
 import { ViewInvoiceComponent } from './product-entry/invoice-entry/view-invoice/view-invoice.component';
 import { NewSupplierComponent } from './product-entry/suppliers/new-supplier/new-supplier.component';
 import { InboundRequisitionComponent } from './product-movement/inbound-requisition/inbound-requisition.component';
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
 // import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
-import { CoreUiModules } from "../../../core-ui-modules/CoreUiModules";
+import { CoreUiModules } from '../../../core-ui-modules/CoreUiModules';
 import { ProductGridComponent } from './product-movement/helper-components/products/product-grid-component';
-import { ProductGridItemComponent } from "./product-movement/helper-components/products/product-grid-item-component";
+import { ProductGridItemComponent } from './product-movement/helper-components/products/product-grid-item-component';
 import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supplier-search/apmis-store-supplier-search.component';
 import { ProductExitComponent } from './product-exit/product-exit.component';
 import { SalesComponent } from './product-exit/sales/sales.component';
 import { RefundComponent } from './product-exit/refund/refund.component';
-import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 import { ProductToggleComponent } from './apmis-store-product/product-conguration/config-product/product-toggle/product-toggle.component';
+// tslint:disable-next-line:max-line-length
 import { ConsumableEntryComponent } from './apmis-store-product/product-conguration/config-product/consumable-entry/consumable-entry.component';
 import { DrugEntryComponent } from './apmis-store-product/product-conguration/config-product/drug-entry/drug-entry.component';
 import { BaseUnitComponent } from './apmis-store-product/product-conguration/config-product/base-unit/base-unit.component';
+// tslint:disable-next-line:max-line-length
 import { ConfigContainerComponent } from './apmis-store-product/product-conguration/config-product/config-container/config-container.component';
 import { FromPurchaseOrderComponent } from './product-entry/invoice-entry/new-invoice-entry/from-purchase-order/from-purchase-order.component';
 import { NoPurchaseOrderComponent } from './product-entry/invoice-entry/new-invoice-entry/no-purchase-order/no-purchase-order.component';
-import { StoreOutboundService } from "../../../services/facility-manager/setup/store-outbound-requisitory-service";
+import { StoreOutboundService } from '../../../services/facility-manager/setup/store-outbound-requisitory-service';
 import { CustomerComponent } from './product-exit/customer/customer.component';
 import { CustomerPrescriptionComponent } from './product-exit/customer/customer-prescription/customer-prescription.component';
 import { MaterialModule } from 'app/shared-common-modules/material-module';
 import { ApmisCustomerComponent } from './product-exit/sales/apmis-customer/apmis-customer.component';
-
-
+import { FocusDirective } from './components/directives/apmis-focus-directive';
+// tslint:disable-next-line:max-line-length
+import { InvoiceEntryLineItemComponent } from './product-entry/invoice-entry/new-invoice-entry/invoice-entry-line-item/invoice-entry-line-item.component';
+import { ApmisNairaComponent } from './components/apmis-naira/apmis-naira.component';
+import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 
 @NgModule({
-	imports: [CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule, CoreUiModules, MaterialModule],
+	imports: [
+		CommonModule,
+		ApmisStoreRoutingModule,
+		OnlyMaterialModule,
+		FormsModule,
+		ReactiveFormsModule,
+		CoreUiModules,
+		MaterialModule
+	],
 	declarations: [
 		ApmisStoreLandingpageComponent,
 		ApmisStoreHomeComponent,
@@ -130,7 +144,12 @@ import { ApmisCustomerComponent } from './product-exit/sales/apmis-customer/apmi
 		DrugEntryComponent,
 		BaseUnitComponent,
 		ConfigContainerComponent,
-		ApmisCustomerComponent
+		ApmisCustomerComponent,
+		FromPurchaseOrderComponent,
+		NoPurchaseOrderComponent,
+		FocusDirective,
+		InvoiceEntryLineItemComponent,
+		ApmisNairaComponent
 	],
 	providers: [
 		StoreService,
@@ -139,7 +158,8 @@ import { ApmisCustomerComponent } from './product-exit/sales/apmis-customer/apmi
 		ProductTypeService,
 		SupplierService,
 		PurchaseOrderService,
-		StoreOutboundService
+		StoreOutboundService,
+		PurchaseEntryService
 	]
 })
-export class ApmisStoreModule { }
+export class ApmisStoreModule {}

@@ -115,6 +115,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 	headerText = '';
 	authorizationType: AuthorizationType;
 	USE_DOC_AUTHORIZATION = USE_DOC_AUTHORIZATION;
+	menuPrescription2: boolean;
 	constructor(
 		private countryService: CountriesService,
 		private patientService: PatientService,
@@ -757,6 +758,36 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 		this.menuVitals = false;
 		this.menuTimeline = false;
 		this.menuPrescription = true;
+		this.menuPrescription2 = false;
+		this.menuExternalPrescription = false;
+		this.menuFinance = false;
+		this.menuMedicationHistory = false;
+		this.menuPayment = false;
+		this.menuTags = false;
+		this.menuResp = false;
+		this.menuBCRAssessment = false;
+	}
+
+	menuPrescriptions2_click() {
+		this.menuSummary = false;
+		this.menuUploads = false;
+		this.menuPharmacy = false;
+		this.menuBilling = false;
+		this.menuTreatmentPlan = false;
+		this.menuImaging = false;
+		this.menuImmunization = false;
+		this.menuLab = false;
+		this.menuForms = false;
+		this.menuUploads = false;
+		this.menuDocs = false;
+		this.menuPregnant = false;
+		this.menuOrder = false;
+		this.menuFluid = false;
+		this.menuRegisters = false;
+		this.menuVitals = false;
+		this.menuTimeline = false;
+		this.menuPrescription = false;
+		this.menuPrescription2 = true;
 		this.menuExternalPrescription = false;
 		this.menuFinance = false;
 		this.menuMedicationHistory = false;
@@ -1029,7 +1060,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 		this.addTagsPop = true;
 	}
 
-	onPersonValueUpdated(value){
+	onPersonValueUpdated(value) {
 		this.patient = value;
 		this.mergePatient = false;
 		this.ngOnInit();

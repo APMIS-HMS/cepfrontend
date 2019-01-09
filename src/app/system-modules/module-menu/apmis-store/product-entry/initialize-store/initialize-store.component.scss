@@ -12,10 +12,11 @@
 }
 
 
-.formWrap{
+.formWrap {
     justify-items: center;
     display: grid;
-    .new-btn-solid-blue{
+
+    .new-btn-solid-blue {
         margin: 10px;
     }
 }
@@ -43,4 +44,12 @@
 .disabled {
     pointer-events: none;
     opacity: 0.3;
+}
+
+.initialized-product {
+    color: green;
+    position: absolute;
+    right: 0;
+    padding-right: 5px;
+    padding-bottom: 5px;
 }

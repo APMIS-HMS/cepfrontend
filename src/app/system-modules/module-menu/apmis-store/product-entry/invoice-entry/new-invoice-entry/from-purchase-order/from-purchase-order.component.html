@@ -1,12 +1,18 @@
 <div class="sel-sup">
-  <div class="InputGroup" style="margin-left:30px;">
-    <input [formControl]="searchSuplier" class="customInput" type="text" required>
-    <span class="highlight"></span>
-    <label class="customLabel">Supplier:</label>
+  <div class="InputGroup dropDown-container">
+    <div class="select">
+      <select [formControl]="supplierFormControl" name="dropDown-container" id="dropDown-container">
+        <option value="0">Select Supplier</option>
+        <option *ngFor="let supplier of suppliers" [ngValue]="supplier">{{supplier.supplier.name}}</option>
+      </select>
+      <label class="customLabel">Supplier:</label>
+    </div>
   </div>
   <div class="InputGroup dropDown-container">
     <div class="select">
       <select [formControl]="purchaseOrderFormControl" name="dropDown-container" id="dropDown-container">
+        <option value="0">Select Purchase Order</option>
+        <option *ngFor="let order of purchaseOrderCollection" [ngValue]="order">{{order.purchaseOrderNumber}}</option>
       </select>
       <label class="customLabel">Purchase Order</label>
     </div>
@@ -35,15 +41,15 @@
 
   <div class="store-tbody">
     <div class="store-pre-tr">
-      <div class="store-tr">
-        <div class="store-td store-td-actions"><input type="checkbox"></div>
+      <div class="store-tr" *ngFor="let product of products">
+        <div class="store-td store-td-actions"><input type="checkbox" [checked]="product.isChecked" (change)="productChecked($event, product)"></div>
         <div class="config-tr-in in-tr">
-          <div class="store-td">Panadol</div>
-          <div class="store-td">200 packs</div>
+          <div class="store-td">{{product.productName}}</div>
+          <div class="store-td">{{product.quantity}} {{product.productPackType}}</div>
           <div class="store-td">10 packs</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#200/sachet</div>
+          <div class="store-td">#{{product.costPrice}}/{{product.productPackType}}</div>
+          <div class="store-td">#{{product.costPrice * product.quantity}}</div>
+          <div class="store-td">#{{product.sellingPrice}}/{{product.productPackType}}</div>
         </div>
         <div class="store-td store-td-actions"></div>
       </div>
@@ -61,7 +67,7 @@
     <div class="store-tr">
       <div class="store-th store-td-actions"></div>
       <div class="config-tr-in in-tr">
-        <div class="store-th">Products</div>
+        <div class="store-th" style="grid-column: span 2">Products</div>
         <div class="store-th">Quantity</div>
         <div class="store-th">Cost/Unit</div>
         <div class="store-th">Margin</div>
@@ -75,16 +81,17 @@
 
   <div class="store-tbody">
     <div class="store-pre-tr">
-      <div class="store-tr">
+
+      <div class="store-tr" *ngFor="let picked of selectedProducts">
         <div class="store-td store-td-actions"></div>
         <div class="config-tr-in in-tr">
-          <div class="store-td">Panadol</div>
-          <div class="store-td">200 packs</div>
-          <div class="store-td">10 packs</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#200/sachet</div>
+          <div class="store-td" style="grid-column: span 2">{{picked.productName}}</div>
+          <div class="store-td">{{picked.quantity}} {{picked.productPackType}}</div>
+          <div class="store-td">{{picked.costPrice}} {{picked.productPackType}}</div>
+          <div class="store-td">{{picked.margin}}</div>
+          <div class="store-td">#{{picked.sellingPrice}}</div>
+          <div class="store-td">{{picked.batchNumber | uppercase }}</div>
+          <div class="store-td">{{picked.expiryDate | date:'shortDate'}}</div>
         </div>
         <div class="store-td store-td-actions">
           <div class="table-list col-xs-1 action-placeholder">
@@ -102,47 +109,65 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="store-pre-tr">
       <div class="store-tr">
+
+
         <div class="store-td store-td-actions"></div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">
-            <div class="searchproduct">
-              <div class="InputGroup">
-                <input class="customInput" type="text">
-                <ul class="search-sugestions bar" *ngIf="searchProduct">
-                  <li class="search-sugestion">Paracetamol</li>
-                  <li class="search-sugestion">Paracetamol</li>
-                  <li class="search-sugestion">Paracetamol</li>
-                </ul>
+        <form [formGroup]="productForm">
+          <div formArrayName="productArray">
+            <div formGroupName="{{i}}" *ngFor="let picked of productForm['controls'].productArray['controls']; let i = index;">
+              <!-- <div class="store-td" style="grid-column: span 2">
+                <div class="searchproduct">
+                  <div class="InputGroup">
+                    <input [myFocus]="isProductFocused" formControlName="productName" (focus)="onFocus('in')"
+                      (focusout)="onFocus('out')" class="customInput" type="text">
+                    <ul class="search-sugestions bar" *ngIf="showProduct && productConfigs.length > 0">
+                      <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:60px;">
+                  <input formControlName="quantity" (keydown.enter)="onKeydown($event, 5, i)" [myFocus]="isQuantityFocused"
+                    class="customInput" type="number" min="0">
+                </div>
+              </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:60px;">
+                  <input formControlName="costPrice" (keydown.enter)="onKeydown($event, 6, i)" [myFocus]="isCostPriceFocused"
+                    class="customInput" type="number" min="0">
+                </div>
+              </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:60px;">
+                  <input formControlName="margin" (keydown.enter)="onKeydown($event, 1, i)" [myFocus]="isMarginFocused"
+                    class="customInput" type="number" max="100" min="0">
+                </div>
+              </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:60px;">
+                  <input formControlName="sellingPrice" (keydown.enter)="onKeydown($event, 2,i)" [myFocus]="isSellingPriceFocused"
+                    class="customInput" type="number">
+                </div>
+              </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:60px;">
+                  <input formControlName="batchNumber" (keydown.enter)="onKeydown($event, 3, i)" [myFocus]="isBatchFocused"
+                    class="customInput" type="text">
+                </div>
+              </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:100px;">
+                  <input formControlName="expiryDate" (keydown.enter)="onKeydown($event, 4, i)" [myFocus]="isExpiryDateFocused"
+                    class="customInput" type="date">
+                </div>
+              </div> -->
+
+              <app-invoice-entry-line-item [product]=picked.value (pushConstructedProduct)="receiveConstructedProduct($event, i)"></app-invoice-entry-line-item>
             </div>
           </div>
-          <div class="store-td">200 packs</div>
-          <div class="store-td">10 packs</div>
-          <div class="store-td">
-            <div class="InputGroup" style="width:60px;">
-              <input [formControl]="searchSuplier" class="customInput" type="text">
-            </div>
-          </div>
-          <div class="store-td">
-            <div class="InputGroup" style="width:60px;">
-              <input [formControl]="searchSuplier" class="customInput" type="text">
-            </div>
-          </div>
-          <div class="store-td">
-            <div class="InputGroup" style="width:60px;">
-              <input [formControl]="searchSuplier" class="customInput" type="text">
-            </div>
-          </div>
-          <div class="store-td">
-            <div class="InputGroup" style="width:60px;">
-              <input [formControl]="searchSuplier" class="customInput" type="text">
-            </div>
-          </div>
-        </div>
+        </form>
         <div class="store-td store-td-actions">
           <div class="table-list col-xs-1 action-placeholder">
             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
@@ -158,11 +183,15 @@
             </div>
           </div>
         </div>
+
+
+
+
       </div>
       <div class="store-tr">
         <div class="store-td"></div>
         <div class="store-td">
-          <div class="link-cta">
+          <div class="link-cta" (click)="addNewOrder()">
             <i class="fa fa-plus"></i>
             <span>Add another item to the purchase order</span>
           </div>

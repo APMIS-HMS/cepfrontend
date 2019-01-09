@@ -7,7 +7,8 @@ import { DatePipe } from '@angular/common';
 import {
 	FacilitiesServiceCategoryService,
 	EmployeeService,
-	InventoryInitialiserService
+	InventoryInitialiserService,
+	InventoryService
 } from 'app/services/facility-manager/setup';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -16,6 +17,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 import { Subscription } from 'rxjs/Subscription';
 import { Inventory } from '../../components/models/inventory';
 import { InventoryTransaction } from '../../components/models/inventorytransaction';
+import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-initialize-store',
@@ -52,6 +54,12 @@ export class InitializeStoreComponent implements OnInit {
 	loginEmployee: any;
 	selectedCategoryName: any;
 	showCategory: boolean;
+	existingProducts: any;
+	limit = APMIS_STORE_PAGINATION_LIMIT;
+	total = 0;
+	skip = 0;
+	numberOfPages = 0;
+	saving = false;
 
 	constructor(
 		private _productService: ProductService,
@@ -61,7 +69,8 @@ export class InitializeStoreComponent implements OnInit {
 		private authFacadeService: AuthFacadeService,
 		private systemModuleService: SystemModuleService,
 		private employeeService: EmployeeService,
-		private _inventoryInitialiserService: InventoryInitialiserService
+		private _inventoryInitialiserService: InventoryInitialiserService,
+		private _inventoryService: InventoryService
 	) {
 		this.subscription = this.employeeService.checkInAnnounced$.subscribe((res) => {
 			if (!!res) {
@@ -157,6 +166,39 @@ export class InitializeStoreComponent implements OnInit {
 		this.InitializeProductArray();
 		this.removeProduct(0);
 		this.getServiceCategories();
+		this.getInitializedProductList();
+	}
+
+	getInitializedProductList() {
+		this._inventoryService
+			.find({
+				query: {
+					facilityId: this.selectedFacility._id,
+					$select: [
+						'availableQuantity',
+						'categoryId',
+						'facilityId',
+						'facilityServiceId',
+						'productId',
+						'serviceId',
+						'storeId',
+						'totalQuantity',
+						'margin',
+						'productObject',
+						'costPrice'
+					],
+					$limit: this.limit,
+					$skip: this.skip * this.limit
+				}
+			})
+			.then(
+				(payload) => {
+					this.existingProducts = payload.data;
+					this.numberOfPages = payload.total / this.limit;
+					this.total = payload.total;
+				},
+				(error) => {}
+			);
 	}
 
 	close_onClick(e) {
@@ -209,7 +251,7 @@ export class InitializeStoreComponent implements OnInit {
 				this.showCategory = true;
 			} else {
 				setTimeout(() => {
-					this.showProduct = false;
+					this.showCategory = false;
 				}, 300);
 			}
 		} else {
@@ -419,7 +461,9 @@ export class InitializeStoreComponent implements OnInit {
 		}
 	}
 
-	save(value, product) {
+	save() {
+		const value = this.productForm.controls['productArray'].value;
+		this.saving = true;
 		if (this.checkingObject.storeId === undefined) {
 			if (!!this.checkingObject.typeObject) {
 				this.checkingObject = this.checkingObject.typeObject;
@@ -433,7 +477,7 @@ export class InitializeStoreComponent implements OnInit {
 			categoryId: this.selelctedCategoryId._id
 		};
 		const _saveProductList = [];
-		value.productArray.forEach((inproduct, i) => {
+		value.forEach((inproduct, i) => {
 			const mainProductObject = this.selectedProducts.find(
 				(pro) => pro.productObject.id.toString() === inproduct.configProduct.id.toString()
 			);
@@ -462,11 +506,14 @@ export class InitializeStoreComponent implements OnInit {
 			_saveProductList.push(_saveProduct);
 		});
 
-		this.productForm.reset();
-		this.productForm.controls['productArray'] = new FormArray([]);
 		this._inventoryInitialiserService.create(_saveProductList, true).then(
 			(result) => {
 				if (result.status === 'success') {
+					this.saving = false;
+					this.productForm.controls['productArray'] = new FormArray([]);
+					this.productConfigSearch.reset();
+					this.selectedProducts = [];
+					this.productConfigs = [];
 					this.systemModuleService.announceSweetProxy(
 						'Your product has been initialised successfully',
 						'success',
@@ -480,11 +527,13 @@ export class InitializeStoreComponent implements OnInit {
 					);
 					this.productForm.controls['productArray'] = new FormArray([]);
 				} else {
+					this.saving = false;
 					const text = 'This product exist in your inventory';
 					this.systemModuleService.announceSweetProxy(text, 'info');
 				}
 			},
 			(error) => {
+				this.saving = false;
 				const errMsg = 'There was an error while initialising product, please try again!';
 				this.systemModuleService.announceSweetProxy(errMsg, 'error');
 			}
@@ -492,4 +541,9 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	onSubmit() {}
+
+	loadCurrentPage(event) {
+		this.skip = event;
+		this.getInitializedProductList();
+	}
 }
