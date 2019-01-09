@@ -1,3 +1,4 @@
+import { StoreCheckInComponent } from './../../../shared-module/store-check-in/store-check-in.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApmisStoreRoutingModule } from './apmis-store-routing.module';
@@ -51,7 +52,6 @@ import { ViewInvoiceComponent } from './product-entry/invoice-entry/view-invoice
 import { NewSupplierComponent } from './product-entry/suppliers/new-supplier/new-supplier.component';
 import { InboundRequisitionComponent } from './product-movement/inbound-requisition/inbound-requisition.component';
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
-// import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
 import { CoreUiModules } from '../../../core-ui-modules/CoreUiModules';
 import { ProductGridComponent } from './product-movement/helper-components/products/product-grid-component';
 import { ProductGridItemComponent } from './product-movement/helper-components/products/product-grid-item-component';
@@ -78,6 +78,8 @@ import { FocusDirective } from './components/directives/apmis-focus-directive';
 import { InvoiceEntryLineItemComponent } from './product-entry/invoice-entry/new-invoice-entry/invoice-entry-line-item/invoice-entry-line-item.component';
 import { ApmisNairaComponent } from './components/apmis-naira/apmis-naira.component';
 import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
+// tslint:disable-next-line:max-line-length
+import { SearchSuggestionComponent } from './apmis-store-product/product-conguration/config-product/search-suggestion/search-suggestion.component';
 
 @NgModule({
 	imports: [
@@ -128,10 +130,9 @@ import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invo
 		NewSupplierComponent,
 		InboundRequisitionComponent,
 		OutboundRequisitionComponent,
-		// StoreCheckInComponent,
 		ProductGridComponent,
 		ProductGridItemComponent,
-		// StoreCheckInComponent,
+		StoreCheckInComponent,
 		ApmisStoreSupplierSearchComponent,
 		ProductExitComponent,
 		SalesComponent,
@@ -149,7 +150,8 @@ import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invo
 		NoPurchaseOrderComponent,
 		FocusDirective,
 		InvoiceEntryLineItemComponent,
-		ApmisNairaComponent
+		ApmisNairaComponent,
+		SearchSuggestionComponent
 	],
 	providers: [
 		StoreService,
