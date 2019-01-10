@@ -13,7 +13,7 @@
     <div class="store-avail-bckgrnd">
       <span>Drugs/brands available in store</span>
     </div>
-    <div class="drg-InStores">
+    <!-- <div class="drg-InStores">
       <h4>Drugs/brands also available in:</h4>
       <div class="store-in">
         <div class="store-in-avail">
@@ -64,31 +64,6 @@
               </div>
             </td>
           </tr>
-          <!-- <tr class="th-xxx">
-            <td style="width: 5%;">
-              <input type="radio">
-            </td>
-            <td>
-              <div class="prd">
-                <span>EMZOR PARACETAMOL TABLET 500 MG],</span>
-                <a class="blue">Unit Cost: 60</a>
-              </div>
-            </td>
-            <td>
-              <div class="qty">
-                <span>200</span>
-                <div class="frm">
-                  <div class="frm-1">
-                    <div class="sel" style=" width: 100% !important;">
-                      <select>
-                        <option value="0">Tablets</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr> -->
         </tbody>
       </table>
     </div>
@@ -138,7 +113,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
+    <app-gen-bill-search (searchResultEvent)="receive_search_result_event($event)" [selectedDrug]="drug" [stores]=stores
+      [drugs]=drugs></app-gen-bill-search>
   </div>
 
   <div *ngIf="searchProduct">
@@ -150,17 +127,18 @@
     </div>
     <div class="searchproduct">
       <div class="InputGroup">
-        <input class="customInput" type="text" required>
+        <input class="customInput" [formControl]="productSearchFormControl" type="text" required>
         <span class="highlight"></span>
         <span class="bar"></span>
         <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Drugs / Brands with substitute</label>
         <ul class="search-sugestions bar" *ngIf="searchList">
-          <li (click)="onShowSearchResult()" class="search-sugestion">Artesunate panadol</li>
+          <li *ngFor="let product of searchResults" (click)="onShowSearchResult(product)" class="search-sugestion">{{product.productObject.name}}</li>
         </ul>
       </div>
     </div>
     <div *ngIf="searchShow">
-      <app-gen-bill-search></app-gen-bill-search>
+      <app-gen-bill-search (searchResultEvent)="receive_search_result_event($event)" [selectedDrug]="drug" [stores]=stores
+        [drugs]=drugs></app-gen-bill-search>
     </div>
   </div>
 </div>
