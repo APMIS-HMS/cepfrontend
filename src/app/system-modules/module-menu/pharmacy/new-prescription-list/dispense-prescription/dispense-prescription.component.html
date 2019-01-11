@@ -54,7 +54,7 @@
     </div>
   </div>
 
-  <div class="store-tbody">
+  <div class="store-tbody" *ngFor="let b of [2, 3]; let i=index">
     <div class="store-tr">
       <div class="store-td store-td-actions">
         <i *ngIf="item_to_show(i)" (click)="toggle_tr(i, 'down')" class="exp-tr fa fa-angle-down"></i>
@@ -113,6 +113,6 @@
           </li>
         </ul>
       </div>
-    </div>    
+    </div>
   </div>
 </div>
