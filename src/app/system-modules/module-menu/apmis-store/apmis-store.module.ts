@@ -1,4 +1,3 @@
-import { StoreCheckInComponent } from './../../../shared-module/store-check-in/store-check-in.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApmisStoreRoutingModule } from './apmis-store-routing.module';
@@ -81,6 +80,7 @@ import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invo
 // tslint:disable-next-line:max-line-length
 import { SearchSuggestionComponent } from './apmis-store-product/product-conguration/config-product/search-suggestion/search-suggestion.component';
 
+import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
 @NgModule({
 	imports: [
 		CommonModule,
