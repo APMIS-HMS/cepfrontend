@@ -79,8 +79,7 @@ import { ApmisNairaComponent } from './components/apmis-naira/apmis-naira.compon
 import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 // tslint:disable-next-line:max-line-length
 import { SearchSuggestionComponent } from './apmis-store-product/product-conguration/config-product/search-suggestion/search-suggestion.component';
-
-import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
+import { ApmisStoreCheckInComponent } from './components/store-check-in/apmis-store-check-in.component';
 @NgModule({
 	imports: [
 		CommonModule,
@@ -132,7 +131,7 @@ import { StoreCheckInComponent } from './components/store-check-in/store-check-i
 		OutboundRequisitionComponent,
 		ProductGridComponent,
 		ProductGridItemComponent,
-		StoreCheckInComponent,
+		ApmisStoreCheckInComponent,
 		ApmisStoreSupplierSearchComponent,
 		ProductExitComponent,
 		SalesComponent,

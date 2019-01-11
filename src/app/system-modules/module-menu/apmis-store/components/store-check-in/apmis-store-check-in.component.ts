@@ -5,18 +5,18 @@ import {
 	EmployeeService,
 	FacilitiesService,
 	StoreService
-} from './../../../../../services/facility-manager/setup/index';
-import { ConsultingRoomModel, Employee, Facility } from './../../../../../models/index';
-import { ClinicHelperService } from './../../../../../system-modules/module-menu/clinic/services/clinic-helper.service';
+} from '../../../../../services/facility-manager/setup/index';
+import { ConsultingRoomModel, Employee, Facility } from '../../../../../models/index';
+import { ClinicHelperService } from '../../../clinic/services/clinic-helper.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
-	selector: 'app-store-check-in',
-	templateUrl: './store-check-in.component.html',
-	styleUrls: [ './store-check-in.component.scss' ]
+	selector: 'app-apmis-store-check-in',
+	templateUrl: './apmis-store-check-in.component.html',
+	styleUrls: [ './apmis-store-check-in.component.scss' ]
 })
-export class StoreCheckInComponent implements OnInit {
+export class ApmisStoreCheckInComponent implements OnInit {
 	@Input() loginEmployee: any;
 	@Input() workSpace: any;
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
