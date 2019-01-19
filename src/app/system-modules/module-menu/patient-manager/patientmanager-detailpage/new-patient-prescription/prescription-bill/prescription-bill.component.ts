@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { InventoryService, StoreService } from 'app/services/facility-manager/setup';
 import { FormControl } from '@angular/forms';
-import { Facility } from 'app/models';
+import { Facility, PrescriptionItem } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
@@ -11,7 +11,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 })
 export class PrescriptionBillComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-	@Input() drug: any;
+	@Input() drug: PrescriptionItem = <PrescriptionItem>{};
 
 	productAvailable = true;
 	searchProduct = false;

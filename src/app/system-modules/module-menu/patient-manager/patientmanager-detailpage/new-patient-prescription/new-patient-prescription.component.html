@@ -8,7 +8,7 @@
 
 
   <div class="tab-content" *ngIf="tab_prescribe_drug">
-    <app-prescribe-drug></app-prescribe-drug>
+    <app-prescribe-drug [selectedAppointment]="selectedAppointment" [patientDetails]="patientDetails"></app-prescribe-drug>
   </div>
   <div class="tab-content" *ngIf="tab_prescription_history">
     <app-prescription-history></app-prescription-history>

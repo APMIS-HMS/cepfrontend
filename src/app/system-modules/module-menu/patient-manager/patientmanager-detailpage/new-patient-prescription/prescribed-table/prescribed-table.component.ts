@@ -1,9 +1,12 @@
 import { DrugListApiService } from './../../../../../../services/facility-manager/setup/drug-list-api.service';
 import { DrugInteractionService } from './../services/drug-interaction.service';
 import { Component, OnInit, Output, Input, OnDestroy } from '@angular/core';
-import { Prescription, PrescriptionItem } from 'app/models';
+import { Prescription, PrescriptionItem, Facility, Appointment } from 'app/models';
 import { Subscription } from 'rxjs';
-import { PrescriptionPriorityService } from 'app/services/facility-manager/setup';
+import { PrescriptionPriorityService, PrescriptionService } from 'app/services/facility-manager/setup';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
 	selector: 'app-prescribed-table',
@@ -11,15 +14,23 @@ import { PrescriptionPriorityService } from 'app/services/facility-manager/setup
 	styleUrls: [ './prescribed-table.component.scss' ]
 })
 export class PrescribedTableComponent implements OnInit, OnDestroy {
+	@Input() currentPrescription: Prescription = <Prescription>{};
+	@Input() selectedAppointment: Appointment = <Appointment>{};
+	@Input() patientDetails: any;
 	billShow = false;
 	subscription: Subscription;
 	priorities: any[] = [];
 	selectedPrescriptionItem: PrescriptionItem;
-	@Input() currentPrescription: Prescription = <Prescription>{};
+	selectedPriority: any = <any>{};
+	facility: Facility = <Facility>{};
+	clinicObj: any = {};
+	employeeDetails: any = {};
 	constructor(
 		private _drugInteractionService: DrugInteractionService,
 		private _priorityService: PrescriptionPriorityService,
-		private _drugListService: DrugListApiService
+		private _drugListService: DrugListApiService,
+		private _systemModuleService: SystemModuleService,
+		private _prescriptionService: PrescriptionService
 	) {
 		this.subscription = this._drugInteractionService.currentInteraction.subscribe((value) => {
 			if (
@@ -42,9 +53,11 @@ export class PrescribedTableComponent implements OnInit, OnDestroy {
 			.findAll()
 			.then((res) => {
 				this.priorities = res.data;
-				const priority = res.data.filter((x) => x.name.toLowerCase().includes('normal'));
-				if (priority.length > 0) {
-					// this.allPrescriptionsForm.controls['priority'].setValue(priority[0]);
+				const _innerPriorities = res.data.filter((x) => x.name.toLowerCase().includes('normal'));
+				if (_innerPriorities.length > 0) {
+					this.currentPrescription.priority = { id: _innerPriorities[0]._id, name: _innerPriorities[0].name };
+					this.selectedPriority = _innerPriorities[0];
+					console.log(this.selectedPriority);
 				}
 			})
 			.catch((err) => {});
@@ -67,5 +80,25 @@ export class PrescribedTableComponent implements OnInit, OnDestroy {
 		this.currentPrescription.prescriptionItems = this.currentPrescription.prescriptionItems.filter(
 			(i) => i._id !== item._id
 		);
+	}
+	authorizePrescription() {
+		this.currentPrescription.priority = { id: this.selectedPriority._id, name: this.selectedPriority.name };
+		console.log(this.currentPrescription);
+		this._prescriptionService
+			.authorizePresciption(this.currentPrescription)
+			.then((res) => {
+				console.log(res);
+				if (res.status === 'success') {
+					this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success');
+				} else {
+					this._systemModuleService.announceSweetProxy(
+						'There was a problem creating prescription! Please try again later',
+						'error'
+					);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	}
 }

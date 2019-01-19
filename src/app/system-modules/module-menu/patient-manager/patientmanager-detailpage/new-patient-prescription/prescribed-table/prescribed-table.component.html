@@ -96,12 +96,12 @@
 <div class="frm btm-action">
   <div class="frm-1 btnWrap">
     <div class="sel" style=" width: 40% !important;">
-      <select>
+      <select [(ngModel)]="selectedPriority">
         <option value="" disabled selected>Priority</option>
         <option *ngFor="let priority of priorities" [ngValue]="priority">{{priority.name}}</option>
       </select>
     </div>
-    <div class="new-btn-solid-blue disabled">
+    <div [class.disabled]="currentPrescription.prescriptionItems.length === 0" (click)="authorizePrescription()" class="new-btn-solid-blue">
       <span>Authorize RX</span>
     </div>
   </div>

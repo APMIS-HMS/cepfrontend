@@ -13,7 +13,6 @@
     <div class="con-list-wrap">
       <h3 *ngIf="products.length > 0">All</h3>
       <div (dblclick)="selectProduct($event, product)" *ngFor="let product of products" class="list" [class.green]="product.marked">{{product.name}}
-        | {{product.code}}
         <div class="custom-chk">
           <input [checked]="product.marked" (change)="setMarked($event, product)" type="checkbox" id="markCommon">
           <label for="markCommon"><span *ngIf="!product.marked===true">Mark as commonly prescribed</span><span *ngIf="product.marked===true">Commonly

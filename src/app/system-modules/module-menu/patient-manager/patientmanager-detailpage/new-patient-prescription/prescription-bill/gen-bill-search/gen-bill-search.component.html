@@ -79,12 +79,13 @@
     <div class="qty-detail">
       <span>Quantity to dispense</span>
       <div class="qty" style="margin-top:-15px">
-        <span>200</span>
+        <!-- <span>200</span> -->
+        <input class="customInput" min="0" [formControl]="quantityToDispense" type="number" required>
         <div class="frm">
           <div class="frm-1">
             <div class="sel" style=" width: 100% !important;">
-              <select>
-                <option *ngFor="let config of drugPicked?.productObject?.productConfigObject" value="0">{{config.name}}</option>
+              <select (change)="itemChanged($event)">
+                <option *ngFor="let config of drugPicked?.productObject?.productConfigObject" [ngValue]="config">{{config.name}}</option>
               </select>
             </div>
           </div>
@@ -94,12 +95,14 @@
     <div class="qty-detail" style="width: 20%;">
       <span>Drug Price</span>
       <div class="InputGroup">
-        <input class="customInput" type="number" [(ngModel)]="drugPicked?.price.price" required>
+        <input [attr.disabled]="true" class="customInput disabled" type="number" [(ngModel)]="drugPicked?.price.price"
+          required>
         <span class="highlight"></span>
       </div>
     </div>
     <div class="qty-detail">
-      <div class="new-btn-solid-blue">
+<div [attr.disabled]="drugPicked === null || drugPicked === undefined ? true : false" [class.disabled]="drugPicked === null || drugPicked === undefined ? true : false"
+  (click)="bill()" class="new-btn-solid-blue">
         <span>Bill</span>
       </div>
     </div>

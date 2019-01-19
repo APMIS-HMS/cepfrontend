@@ -15,7 +15,7 @@ import {
 	EmployeeService
 } from 'app/services/facility-manager/setup';
 // import { DurationUnits, DosageUnits } from '../../../../../shared-module/helpers/global-config';
-import { Prescription, PrescriptionItem, Facility } from 'app/models';
+import { Prescription, PrescriptionItem, Facility, Appointment } from 'app/models';
 import { DurationUnits, DosageUnits } from 'app/shared-module/helpers/global-config';
 import { DrugInteractionService } from '../services/drug-interaction.service';
 
@@ -26,6 +26,8 @@ import { DrugInteractionService } from '../services/drug-interaction.service';
 })
 export class PrescribeDrugComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
+	@Input() patientDetails: any;
+	@Input() selectedAppointment: Appointment = <Appointment>{};
 	drugSearch = false;
 	priorities: string[] = [];
 	dosageUnits: any[] = [];
@@ -43,27 +45,24 @@ export class PrescribeDrugComponent implements OnInit {
 	addPrescriptionForm: FormGroup;
 	allPrescriptionsForm: FormGroup;
 
-	// drugSearchFormControl: FormControl = new FormControl();
 	selectedFacility: any;
 	subscription: any;
 	checkingStore: any;
 	loginEmployee: any;
 	searchHasBeenDone = false;
-	selectedProductName: any;
+	selectedProductName: any = '';
 	selectedProduct: any;
 	refillCount = 0;
 	startDateFormControl = new FormControl(new Date().toISOString().substring(0, 10));
 	endDateFormControl = new FormControl(new Date().toISOString().substring(0, 10));
 	showRefill: false;
 	currentPrescription: Prescription = <Prescription>{};
+	employeeDetails: any = {};
 	constructor(
 		private fb: FormBuilder,
 		private _locker: CoolLocalStorage,
-		private _facilityService: FacilitiesService,
-		private _prescriptionService: PrescriptionService,
 		private _priorityService: PrescriptionPriorityService,
 		private _frequencyService: FrequencyService,
-		private _employeeService: EmployeeService,
 		private _authFacadeService: AuthFacadeService,
 		private _systemModuleService: SystemModuleService,
 		private _drugListApiService: DrugListApiService,
@@ -77,6 +76,24 @@ export class PrescribeDrugComponent implements OnInit {
 		});
 	}
 	ngOnInit() {
+		this._authFacadeService
+			.getLogingEmployee()
+			.then((res) => {
+				this.employeeDetails = res;
+				this.currentPrescription = <Prescription>{
+					facilityId: this.selectedFacility._id,
+					employeeId: this.employeeDetails._id,
+					clinicId: !!this.selectedAppointment.clinicId ? this.selectedAppointment.clinicId : undefined,
+					priority: '',
+					patientId: this.patientDetails._id,
+					personId: this.patientDetails.personId,
+					prescriptionItems: [],
+					isAuthorised: true,
+					totalCost: 0,
+					totalQuantity: 0
+				};
+			})
+			.catch((err) => {});
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 		this.currentPrescription.prescriptionItems = [];
 		this.prescriptionItems.prescriptionItems = [];
@@ -98,38 +115,45 @@ export class PrescribeDrugComponent implements OnInit {
 		});
 
 		this.addPrescriptionForm.controls['drug'].valueChanges
-			.debounceTime(400)
 			.distinctUntilChanged()
+			.debounceTime(400)
 			.subscribe((value) => {
-				this.searchHasBeenDone = false;
-				const searchList = this.canSearchBeDone(value.split(','));
-				if (searchList.length > 1 && this.selectedProductName.length === 0) {
-					this.selectedProductName = '';
-					this._drugListApiService
-						.find({
-							query: {
-								searchtext: searchList,
-								po: false,
-								brandonly: false,
-								genericonly: true,
-								$limit: false
-							}
-						})
-						.then(
-							(payload) => {
-								this.products = this.modifyProducts(payload.data);
-								if (this.products.length === 0) {
-									this.searchHasBeenDone = true;
-								} else {
+				if (!!value) {
+					this.searchHasBeenDone = false;
+					this.products = [];
+					const searchList = this.canSearchBeDone(value.split(','));
+					if (searchList.length > 0 && this.selectedProductName.length === 0) {
+						this.selectedProductName = '';
+						this._drugListApiService
+							.find({
+								query: {
+									searchtext: value,
+									po: false,
+									brandonly: false,
+									genericonly: true,
+									$limit: false
+								}
+							})
+							.then(
+								(payload) => {
+									if (payload.status === 'success') {
+										this.products = this.modifyProducts(payload.data);
+										if (this.products.length === 0) {
+											this.searchHasBeenDone = true;
+										} else {
+											this.searchHasBeenDone = false;
+										}
+									} else {
+										this.searchHasBeenDone = false;
+									}
+								},
+								(error) => {
 									this.searchHasBeenDone = false;
 								}
-							},
-							(error) => {
-								this.searchHasBeenDone = false;
-							}
-						);
-				} else {
-					this.selectedProductName = '';
+							);
+					} else {
+						this.selectedProductName = '';
+					}
 				}
 			});
 
@@ -153,7 +177,7 @@ export class PrescribeDrugComponent implements OnInit {
 	}
 
 	canSearchBeDone(list: any[]) {
-		return list.filter((value) => value.trim().length > 0).map((l) => l.trim());
+		return list.filter((value) => value.trim().length > 4).map((l) => l.trim());
 	}
 
 	private _getAllPriorities() {
@@ -214,9 +238,9 @@ export class PrescribeDrugComponent implements OnInit {
 		if (focus === 'in') {
 			this.drugSearch = true;
 		} else {
-			// setTimeout(() => {
-			//   this.drugSearch = false;
-			// }, 500);
+			setTimeout(() => {
+				this.drugSearch = false;
+			}, 500);
 		}
 	}
 	close_search(event) {
@@ -264,16 +288,33 @@ export class PrescribeDrugComponent implements OnInit {
 		return this.addPrescriptionForm.valid !== true;
 	}
 	add() {
-		// let prescription: PrescriptionItem = PrescriptionItem({});
 		const item: PrescriptionItem = <PrescriptionItem>{};
 		item.genericName = this.addPrescriptionForm.controls['drug'].value;
 		item.productId = this.addPrescriptionForm.controls['productId'].value;
 		item.isRefill = this.addPrescriptionForm.controls['refill'].value;
 		item.refillCount = this.addPrescriptionForm.controls['refillCount'].value;
 		item.code = this.addPrescriptionForm.controls['code'].value;
-		item._id = UUID.UUID();
+		item.totalCost = 0;
+		item.cost = 0;
 
 		this.currentPrescription.prescriptionItems.push(item);
 		this._drugInteractionService.checkDrugInteractions(this.currentPrescription.prescriptionItems);
+		this.reset();
+	}
+
+	reset() {
+		this.addPrescriptionForm.controls['drug'].reset();
+		this.addPrescriptionForm.controls['startDate'].setValue(new Date().toISOString().substring(0, 10));
+		this.addPrescriptionForm.controls['endDate'].setValue(new Date().toISOString().substring(0, 10));
+		this.addPrescriptionForm.controls['specialInstruction'].reset();
+		const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
+		if (this.frequencies.length > 0) {
+			(<FormGroup>control.controls[0]).controls['frequency'].setValue(this.frequencies[0]);
+		}
+		if (this.durationUnits.length > 0) {
+			(<FormGroup>control.controls[0]).controls['durationUnit'].setValue(this.durationUnits[1]);
+		}
+		(<FormGroup>control.controls[0]).controls['duration'].setValue(0);
+		(<FormGroup>control.controls[0]).controls['dosage'].setValue('');
 	}
 }

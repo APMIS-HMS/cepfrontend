@@ -1,7 +1,8 @@
+import { FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { InventoryService } from 'app/services/facility-manager/setup';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility } from 'app/models';
+import { Facility, PrescriptionItem } from 'app/models';
 
 @Component({
 	selector: 'app-gen-bill-search',
@@ -11,15 +12,25 @@ import { Facility } from 'app/models';
 export class GenBillSearchComponent implements OnInit {
 	@Input() drugs = [];
 	@Input() stores = [];
-	@Input() selectedDrug;
+	@Input() selectedDrug: PrescriptionItem = <PrescriptionItem>{};
 	@Output() searchResultEvent: EventEmitter<any> = new EventEmitter<any>();
 	selectedFacility: any;
 	selectedStore: any;
 	drugPicked: any;
+	quantityToDispense: FormControl = new FormControl(0, [ <any>Validators.required ]);
+	selectedConfig: any;
 	constructor(private _inventoryService: InventoryService, private _locker: CoolLocalStorage) {}
 
 	ngOnInit() {
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+		this.quantityToDispense.valueChanges.subscribe((value: number) => {
+			if (!!this.selectedDrug) {
+				const quantity = Math.floor(this.drugPicked.availableQuantity / this.selectedConfig.size);
+				if (value > quantity || value < 0) {
+					this.quantityToDispense.setValue(quantity);
+				}
+			}
+		});
 	}
 
 	getDrugList() {
@@ -36,9 +47,7 @@ export class GenBillSearchComponent implements OnInit {
 				this.drugs = res.data;
 				this.searchResultEvent.emit({ drugs: this.drugs, selectedStore: this.selectedStore });
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			.catch((err) => {});
 	}
 	selectStore(store) {
 		this.selectedStore = store;
@@ -46,7 +55,39 @@ export class GenBillSearchComponent implements OnInit {
 	}
 
 	onItemChange(drug) {
+		console.log(drug);
 		this.drugPicked = drug;
-		console.log(this.drugPicked);
+		this.selectedConfig = this.drugPicked.productObject.productConfigObject.find((x) => x.isBase === true);
+		this.quantityToDispense.setValue(drug.availableQuantity);
+	}
+
+	itemChanged(event) {
+		this.selectedConfig = this.drugPicked.productObject.productConfigObject.find(
+			(x) => x.name === event.target.value
+		);
+		this.quantityToDispense.setValue(this.drugPicked.availableQuantity / this.selectedConfig.size);
+	}
+
+	bill() {
+		console.log('am in');
+		const product = {
+			id: this.drugPicked.productObject.id,
+			code: this.drugPicked.productObject.code,
+			name: this.drugPicked.productObject.name
+		};
+		this.selectedDrug.productId = this.drugPicked.productObject.id;
+		this.selectedDrug.serviceId = this.drugPicked.serviceId;
+		this.selectedDrug.facilityServiceId = this.drugPicked.facilityServiceId;
+		this.selectedDrug.categoryId = this.drugPicked.categoryId;
+		this.selectedDrug.productName = product;
+		this.selectedDrug.quantity = this.quantityToDispense.value;
+		this.selectedDrug.quantityDispensed = 0;
+		this.selectedDrug.cost = this.drugPicked.price.price;
+		this.selectedDrug.totalCost = this.drugPicked.price.price * this.quantityToDispense.value;
+		this.selectedDrug.isBilled = true;
+		this.selectedDrug.facilityId = this.selectedFacility._id;
+		console.log(this.selectedDrug);
+		// this.prescriptionData.totalCost += this.totalCost;
+		// this.prescriptionData.totalQuantity += this.totalQuantity;
 	}
 }
