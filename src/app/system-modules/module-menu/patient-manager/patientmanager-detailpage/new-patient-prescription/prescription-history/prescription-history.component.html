@@ -3,7 +3,7 @@
 <div class="filterTop">
   <h3>Patient Prescription History</h3>
   <div class="tbl-header-rhs">
-    
+
     <div class="filters">
       <h3>filter:</h3>
     </div>
@@ -37,35 +37,14 @@
     </thead>
 
     <tbody>
-      <tr class="th-xxx">
-        <td>1</td>
-        <td>Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation - 3 mL, Every six hours for 4 Hours, (0)</td>
-        <td colspan="2">5/12/2018</td>
-      </tr>
-      <tr class="th-xxx">
-        <td>2</td>
-        <td>Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation - 3 mL, Every six hours for 4 Hours, (0)</td>
-        <td colspan="2">5/12/2018</td>
-      </tr>
-      <tr class="th-xxx">
-        <td>3</td>
-        <td>Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation - 3 mL, Every six hours for 4 Hours, (0)</td>
-        <td colspan="2">5/12/2018</td>
-      </tr>
-      <tr class="th-xxx">
-        <td>4</td>
-        <td>Comp ound benzoin tincture (USP) 45 MG/ML Gas for Inhalation - 3 mL, Every six hours for 4 Hours, (0)</td>
-        <td colspan="2">5/12/2018</td>
-      </tr>
-      <tr class="th-xxx">
-        <td>5</td>
-        <td>Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation - 3 mL, Every six hours for 4 Hours, (0)</td>
-        <td colspan="2">5/12/2018</td>
-      </tr>
-      <tr class="th-xxx">
-        <td>6</td>
-        <td>Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation - 3 mL, Every six hours for 4 Hours, (0)</td>
-        <td colspan="2">5/12/2018</td>
+      <tr class="th-xxx" *ngFor="let item of patientPrescriptions; let i =index">
+        <td>{{i+1}}</td>
+        <td>{{item.genericName}}
+          <span *ngFor="let reg of item?.regimen">
+            {{reg?.dosage }} - {{reg?.frequency }} for {{ reg?.duration }} {{ reg?.durationUnit }}
+          </span>
+        </td>
+        <td colspan="2">{{item.createdAt|date:'medium'}}</td>
       </tr>
     </tbody>
   </table>

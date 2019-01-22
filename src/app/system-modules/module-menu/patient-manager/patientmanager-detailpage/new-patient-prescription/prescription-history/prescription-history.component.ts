@@ -1,15 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Appointment, Facility } from 'app/models';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { PrescriptionService } from 'app/services/facility-manager/setup';
 
 @Component({
-  selector: 'app-prescription-history',
-  templateUrl: './prescription-history.component.html',
-  styleUrls: ['./prescription-history.component.scss']
+	selector: 'app-prescription-history',
+	templateUrl: './prescription-history.component.html',
+	styleUrls: [ './prescription-history.component.scss' ]
 })
 export class PrescriptionHistoryComponent implements OnInit {
+	@Input() patientDetails: any;
+	@Input() selectedAppointment: Appointment = <Appointment>{};
+	selectedFacility: any;
+	patientPrescriptions: any = [];
+	constructor(private _locker: CoolLocalStorage, private _prescriptionService: PrescriptionService) {}
 
-  constructor() { }
+	ngOnInit() {
+		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+		this.getPatientPrescriptions();
+	}
 
-  ngOnInit() {
-  }
-
+	getPatientPrescriptions() {
+		this._prescriptionService
+			.find({
+				query: { patientId: this.patientDetails.patientId, $select: [ 'prescriptionItems', 'createdAt' ] }
+			})
+			.then(
+				(payload) => {
+					const prescriptions = payload.data
+						.map((item) => {
+							return {
+								createdAt: item.createdAt,
+								prescriptionItems: item.prescriptionItems
+							};
+						})
+						.map((prescription) => {
+							return prescription.prescriptionItems.map((i) => {
+								return {
+									createdAt: prescription.createdAt,
+									genericName: i.genericName,
+									productName: i.productName,
+									regimen: i.regimen
+								};
+							});
+						});
+					this.patientPrescriptions = [].concat.apply([], prescriptions);
+					console.log(this.patientPrescriptions);
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
+	}
 }

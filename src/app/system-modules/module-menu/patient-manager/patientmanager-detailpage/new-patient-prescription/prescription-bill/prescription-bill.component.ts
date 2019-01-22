@@ -131,7 +131,7 @@ export class PrescriptionBillComponent implements OnInit {
 	}
 	onClickPrd() {
 		this.productAvailable = !this.productAvailable;
-		this.searchProduct = true;
+		this.searchProduct = !this.searchProduct;
 	}
 
 	receive_search_result_event(payload) {

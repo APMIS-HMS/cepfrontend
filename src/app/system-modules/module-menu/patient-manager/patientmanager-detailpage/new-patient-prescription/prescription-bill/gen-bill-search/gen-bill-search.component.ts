@@ -14,6 +14,7 @@ export class GenBillSearchComponent implements OnInit {
 	@Input() stores = [];
 	@Input() selectedDrug: PrescriptionItem = <PrescriptionItem>{};
 	@Output() searchResultEvent: EventEmitter<any> = new EventEmitter<any>();
+	@Output() closeModalEvent: EventEmitter<any> = new EventEmitter<any>();
 	selectedFacility: any;
 	selectedStore: any;
 	drugPicked: any;
@@ -87,6 +88,7 @@ export class GenBillSearchComponent implements OnInit {
 		this.selectedDrug.isBilled = true;
 		this.selectedDrug.facilityId = this.selectedFacility._id;
 		console.log(this.selectedDrug);
+		this.closeModalEvent.emit(true);
 		// this.prescriptionData.totalCost += this.totalCost;
 		// this.prescriptionData.totalQuantity += this.totalQuantity;
 	}
