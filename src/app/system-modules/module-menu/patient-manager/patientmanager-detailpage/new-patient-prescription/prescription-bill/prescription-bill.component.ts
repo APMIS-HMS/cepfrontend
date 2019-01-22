@@ -33,10 +33,8 @@ export class PrescriptionBillComponent implements OnInit {
 	ngOnInit() {
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 		this.getStores(this.selectedFacility._id);
-		// this.getDrugList();
 
 		this.productSearchFormControl.valueChanges.debounceTime(400).distinctUntilChanged().subscribe((value) => {
-			console.log(value);
 			this._inventoryService
 				.findFacilityProductList({
 					query: {
@@ -49,11 +47,8 @@ export class PrescriptionBillComponent implements OnInit {
 				.then(
 					(payload) => {
 						this.searchResults = payload.data;
-						console.log(this.searchResults);
 					},
-					(error) => {
-						console.log(error);
-					}
+					(error) => {}
 				);
 			// this.searchHasBeenDone = false;
 			// const searchList = this.canSearchBeDone(value.split(','));
@@ -99,7 +94,6 @@ export class PrescriptionBillComponent implements OnInit {
 			.then(
 				(payload) => {
 					this.stores = payload.data.data;
-					console.log(this.stores);
 				},
 				(error) => {}
 			);
@@ -112,12 +106,9 @@ export class PrescriptionBillComponent implements OnInit {
 				query: { code: this.drug.code, facilityId: this.selectedFacility._id }
 			})
 			.then((res) => {
-				console.log(res);
 				this.drugs = res.data;
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			.catch((err) => {});
 	}
 
 	onClickClose(e) {

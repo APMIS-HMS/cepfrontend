@@ -34,6 +34,8 @@ export interface PrescriptionItem {
 	facilityServiceId?: string;
 	categoryId?: string;
 	code?: string;
+	startDate?: Date;
+	endDate?: Date;
 }
 
 export interface Dispensed {

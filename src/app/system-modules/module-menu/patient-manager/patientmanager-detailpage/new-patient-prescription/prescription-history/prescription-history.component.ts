@@ -45,7 +45,6 @@ export class PrescriptionHistoryComponent implements OnInit {
 							});
 						});
 					this.patientPrescriptions = [].concat.apply([], prescriptions);
-					console.log(this.patientPrescriptions);
 				},
 				(error) => {
 					console.log(error);

@@ -299,6 +299,8 @@ export class PrescribeDrugComponent implements OnInit {
 		item.refillCount = this.addPrescriptionForm.controls['refillCount'].value;
 		item.code = this.addPrescriptionForm.controls['code'].value;
 		item.patientInstruction = this.addPrescriptionForm.controls['specialInstruction'].value;
+		item.startDate = this.addPrescriptionForm.controls['startDate'].value;
+		item.endDate = this.addPrescriptionForm.controls['endDate'].value;
 		item.totalCost = 0;
 		item.cost = 0;
 		item.regimen = this.addPrescriptionForm.controls['regimenArray'].value;
