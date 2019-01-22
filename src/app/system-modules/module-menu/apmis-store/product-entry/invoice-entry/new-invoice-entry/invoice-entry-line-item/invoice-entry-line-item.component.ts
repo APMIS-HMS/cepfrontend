@@ -102,11 +102,11 @@ export class InvoiceEntryLineItemComponent implements OnInit {
 	ngOnInit() {
 		this.sellingPriceFormControl = new FormControl(
 			this.product.sellingPrice === '' ? 0 : this.product.sellingPrice,
-			[ Validators.min(0), Validators.required, Validators.nullValidator ]
+			[ Validators.minLength(0), Validators.required, Validators.nullValidator ]
 		);
 		this.marginFormControl = new FormControl(this.product.margin === '' ? 0 : this.product.margin, [
-			Validators.max(100),
-			Validators.min(0),
+			Validators.maxLength(100),
+			Validators.minLength(0),
 			Validators.required,
 			Validators.nullValidator
 		]);
@@ -126,12 +126,12 @@ export class InvoiceEntryLineItemComponent implements OnInit {
 		]);
 
 		this.quantityFormControl = new FormControl(this.product.quantity === '' ? 0 : this.product.quantity, [
-			Validators.min(0),
+			Validators.minLength(0),
 			Validators.required,
 			Validators.nullValidator
 		]);
 		this.costPriceFormControl = new FormControl(this.product.costPrice === '' ? 0 : this.product.costPrice, [
-			Validators.min(0),
+			Validators.minLength(0),
 			Validators.required,
 			Validators.nullValidator
 		]);

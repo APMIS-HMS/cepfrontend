@@ -161,16 +161,16 @@ export class NoPurchaseOrderComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.sellingPriceFormControl = new FormControl(0, [ Validators.min(0) ]);
-		this.marginFormControl = new FormControl(0, [ Validators.max(100), Validators.min(0) ]);
+		this.sellingPriceFormControl = new FormControl(0, [ Validators.minLength(0) ]);
+		this.marginFormControl = new FormControl(0, [ Validators.maxLength(100), Validators.minLength(0) ]);
 		this.expiryDateFormControl = new FormControl(new Date().toISOString().substring(0, 10));
 		this.batchFormControl = new FormControl('', [ Validators.minLength(3) ]);
 		this.searchProductFormControl = new FormControl('', [ Validators.minLength(3) ]);
 		this.inSearchProductFormControl = new FormControl('', [ Validators.minLength(3) ]);
 		this.inProductConfigSearch = new FormControl('', Validators.minLength(3));
 
-		this.quantityFormControl = new FormControl(0, [ Validators.min(0) ]);
-		this.costPriceFormControl = new FormControl(0, [ Validators.min(0) ]);
+		this.quantityFormControl = new FormControl(0, [ Validators.minLength(0) ]);
+		this.costPriceFormControl = new FormControl(0, [ Validators.minLength(0) ]);
 		this.apmisFilterService.clearItemsStorage(true);
 		this.checkingStore = (<any>this._locker.getObject('checkingObject')).typeObject;
 		this.invoiceDate = new FormControl(new Date().toISOString().substring(0, 10));
