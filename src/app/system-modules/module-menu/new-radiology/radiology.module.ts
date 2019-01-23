@@ -40,7 +40,7 @@ import { ViewRadiologyImagesComponent } from './report/view-radiology-images/vie
 	],
 	declarations: [
 		RadiologyComponent,
-		RadiologyRequestsComponent,
+		// RadiologyRequestsComponent,
 		WorkbenchComponent,
 		InvestigationServiceComponent,
 		InvestigationPriceComponent,
@@ -50,7 +50,7 @@ import { ViewRadiologyImagesComponent } from './report/view-radiology-images/vie
 		ExternalInvestigationsComponent,
 		TemplateComponent,
 		SelectTemplateComponent,
-		NewRadiologyRequestDetailComponent,
+		// NewRadiologyRequestDetailComponent,
 		ViewRadiologyReportComponent,
 		NewRadiologyReportComponent,
 		ViewRadiologyImagesComponent

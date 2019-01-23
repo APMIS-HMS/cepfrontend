@@ -11,6 +11,10 @@ import { Facility } from 'app/models';
 	styleUrls: [ './store-tab.component.scss' ]
 })
 export class StoreTabComponent implements OnInit {
+
+	enableEdit = false;
+	editDone = true;
+	showProductConfiguration = false;
 	@Input() locationId: any = <any>{};
 	@Input() minorLocationId: any = <any>{};
 	selectedFacility: any;
@@ -54,4 +58,23 @@ export class StoreTabComponent implements OnInit {
 		this.skip = event;
 		this.getStores(this.selectedFacility._id);
 	}
+
+	onEdit(){
+		this.enableEdit = true;
+		this.editDone = false;
+	}
+
+	onDoneEdit(){
+		this.enableEdit = false;
+		this.editDone = true;
+	}
+
+	onShowProductConfiguration(){
+		this.showProductConfiguration = true;
+	}
+	
+	close_onClick(e) {		
+		this.showProductConfiguration = false;
+	}
+
 }

@@ -11,16 +11,18 @@
         <div class="input-group-x2">
           <div class="dropDown-container">
             <div class="select">
+              <label>Major Location:</label>
               <select formControlName="majorLoc" name="dropDown-container" id="dropDown-container">
-                <option value="" disabled selected>Major Location</option>
+                <!-- <option value="" disabled selected>Major Location</option> -->
                 <option value={{item._id}} *ngFor="let item of locations">{{item.name}}</option>
               </select>
             </div>
           </div>
           <div class="dropDown-container">
             <div class="select">
+              <label>Minor Location:</label>
               <select formControlName="minorLocationId" name="dropDown-container" id="dropDown-container">
-                <option value="" disabled selected>Minor Location</option>
+                <!-- <option value="" disabled selected>Minor Location</option> -->
                 <option *ngFor="let item of storeLocations" value="{{item._id}}">{{item.name}}</option>
               </select>
             </div>
@@ -32,7 +34,8 @@
             <span class="highlight"></span>
             <label class="customLabel">Store Name</label>
           </div>
-          <app-apmis-search class="apmis-search" [data]="productTypes" [placeholder]="placeholder" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)"></app-apmis-search>
+          <app-apmis-search class="apmis-search" [data]="productTypes" [placeholder]="placeholder" (onSelectedItems)="onSearchSelectedItems($event)"
+            (onCreateItem)="onCreateNewItem($event)"></app-apmis-search>
         </div>
         <div class="input-group-x2">
           <div class="InputGroup" style="margin-right:5px;">
