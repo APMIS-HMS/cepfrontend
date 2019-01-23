@@ -20,6 +20,6 @@ import { RmAppntHistoryComponent } from './rm-request/rm-request-list/rm-appoint
     RadiologyModuleRoutingModule,
     MaterialModule, OnlyMaterialModule
   ],
-  declarations: [RadiologyModuleComponent, RmNewRequestComponent, RmRequestComponent, RmRequestListComponent, RmModalityComponent, RmInvestigationComponent, RmAppointmentComponent, RmAppntAppointmentsComponent, RmAppntCheckinsComponent, RmAppntHistoryComponent]
+  declarations: [RadiologyModuleComponent, RmRequestComponent, RmRequestListComponent, RmModalityComponent, RmInvestigationComponent, RmAppointmentComponent, RmAppntAppointmentsComponent, RmAppntCheckinsComponent, RmAppntHistoryComponent]
 })
 export class RadiologyModuleModule { }

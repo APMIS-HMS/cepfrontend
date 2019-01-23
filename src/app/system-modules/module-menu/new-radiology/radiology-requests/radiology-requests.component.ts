@@ -30,7 +30,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { LabEventEmitterService } from '../../../../services/facility-manager/lab-event-emitter.service';
 
 @Component({
-	selector: 'app-lab-requests',
+	selector: 'app-rad-requests',
 	templateUrl: './radiology-requests.component.html',
 	styleUrls: [ './radiology-requests.component.scss' ]
 })

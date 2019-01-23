@@ -51,6 +51,9 @@ import {ImageCropperModule} from 'ng2-img-cropper';
 import {ImageViewerComponent} from '../shared-module/image-viewer/image-viewer.component';
 import {CustomLogoComponent} from './CustomLogoComponent';
 import {CoreUiModules} from '../core-ui-modules/CoreUiModules';
+import { RmNewRequestComponent } from "app/system-modules/module-menu/radiology-module/rm-request/rm-new-request/rm-new-request.component";
+import { RadiologyRequestsComponent } from "app/system-modules/module-menu/new-radiology/radiology-requests/radiology-requests.component";
+import { NewRadiologyRequestDetailComponent } from "app/system-modules/module-menu/new-radiology/radiology-requests/request-detail/request-detail.component";
 
 
 @NgModule({
@@ -80,7 +83,10 @@ import {CoreUiModules} from '../core-ui-modules/CoreUiModules';
         CustomLogoComponent,
         PrescribedTableComponent,
         PrescriptionBillComponent,
-        GenBillSearchComponent
+        GenBillSearchComponent,
+        RmNewRequestComponent,
+        RadiologyRequestsComponent,
+        NewRadiologyRequestDetailComponent
     ],
     exports: [
         NgbModule,
@@ -122,7 +128,10 @@ import {CoreUiModules} from '../core-ui-modules/CoreUiModules';
         CoreUiModules,
         PrescribedTableComponent,
         PrescriptionBillComponent,
-        GenBillSearchComponent
+        GenBillSearchComponent,
+        RmNewRequestComponent,
+        RadiologyRequestsComponent,
+        NewRadiologyRequestDetailComponent
     ],
     imports: [
         OnlyMaterialModule,

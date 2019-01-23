@@ -220,6 +220,7 @@
         <app-patient-immunization [patient]="patient" *ngIf="menuImmunization"></app-patient-immunization>
         <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
         <app-lab-requests [appointment]="selectedAppointment" [isLaboratory]="false" [patientId]="patient" *ngIf="menuLab"></app-lab-requests>
+        <app-rad-requests [appointment]="selectedAppointment" [isLaboratory]="false" *ngIf="menuImaging" [patientId]="patient"></app-rad-requests>
         <app-payment [patient]="patient" *ngIf="menuPayment"></app-payment>
         <app-patient-tags *ngIf="menuTags"></app-patient-tags>
         <app-treatement-plan [patient]="patient" *ngIf="menuTreatmentPlan"></app-treatement-plan>
