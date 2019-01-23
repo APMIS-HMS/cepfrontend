@@ -314,6 +314,8 @@ export class PrescribeDrugComponent implements OnInit {
 		this.addPrescriptionForm.controls['drug'].reset();
 		this.addPrescriptionForm.controls['startDate'].setValue(new Date().toISOString().substring(0, 10));
 		this.addPrescriptionForm.controls['endDate'].setValue(new Date().toISOString().substring(0, 10));
+		this.addPrescriptionForm.controls['refill'].setValue(false);
+		this.addPrescriptionForm.controls['refillCount'].setValue(0);
 		this.addPrescriptionForm.controls['specialInstruction'].reset();
 		const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
 		if (this.frequencies.length > 0) {

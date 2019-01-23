@@ -38,7 +38,7 @@
               <i class="">Duplicate Prescription</i>
               <i>View</i>
             </div> -->
-            <div class="ft-btn  disabled">
+            <div *ngIf="item.isRefill === true" class="ft-btn  disabled">
               <span>Refill</span>
             </div>
           </div>

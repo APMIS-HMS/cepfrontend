@@ -23,7 +23,12 @@ export class PrescriptionHistoryComponent implements OnInit {
 	getPatientPrescriptions() {
 		this._prescriptionService
 			.find({
-				query: { patientId: this.patientDetails.patientId, $select: [ 'prescriptionItems', 'createdAt' ] }
+				query: {
+					patientId: this.patientDetails._id,
+					$select: [ 'prescriptionItems', 'createdAt' ],
+					$sort: { createdAt: -1 }
+					// $limit: false
+				}
 			})
 			.then(
 				(payload) => {
