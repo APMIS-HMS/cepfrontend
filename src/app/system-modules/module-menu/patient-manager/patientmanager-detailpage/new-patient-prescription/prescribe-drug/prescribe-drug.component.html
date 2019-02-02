@@ -21,7 +21,7 @@
             <div class="sel">
               <select formControlName="frequency" placeholder="Frequency">
                 <option value="" disabled selected>Frequency</option>
-                <option *ngFor="let fre of frequencies" [ngValue]="fre">{{fre.name}}</option>
+                <option *ngFor="let fre of frequencies" [ngValue]="fre.name">{{fre.name}}</option>
               </select>
             </div>
             <div class="InputGroup">
@@ -32,7 +32,7 @@
             <div class="sel">
               <select formControlName="durationUnit" placeholder="Duration Unit">
                 <option value="" disabled selected>Duration Unit</option>
-                <option *ngFor="let unit of durationUnits" [ngValue]="unit">{{unit.name}}</option>
+                <option *ngFor="let unit of durationUnits" [ngValue]="unit.name">{{unit.name}}</option>
               </select>
             </div>
           </div>
@@ -88,5 +88,5 @@
 <div class="div-space"></div>
 <div class="div-space"></div>
 
-<app-prescribed-table [selectedAppointment]="selectedAppointment" [patientDetails]="patientDetails"
-  [currentPrescription]="currentPrescription"></app-prescribed-table>
+<app-prescribed-table (startPrescription)="startPrescription($event)" [selectedAppointment]="selectedAppointment"
+  [patientDetails]="patientDetails" [currentPrescription]="currentPrescription"></app-prescribed-table>

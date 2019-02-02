@@ -4,21 +4,16 @@ import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Subject } from 'rxjs/Subject';
-import { UUID } from 'angular2-uuid';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-import {
-	FacilitiesService,
-	PrescriptionService,
-	PrescriptionPriorityService,
-	FrequencyService,
-	EmployeeService
-} from 'app/services/facility-manager/setup';
-// import { DurationUnits, DosageUnits } from '../../../../../shared-module/helpers/global-config';
+import { PrescriptionPriorityService, FrequencyService } from 'app/services/facility-manager/setup';
 import { Prescription, PrescriptionItem, Facility, Appointment } from 'app/models';
 import { DurationUnits, DosageUnits } from 'app/shared-module/helpers/global-config';
 import { DrugInteractionService } from '../services/drug-interaction.service';
-
+import * as addMinutes from 'date-fns/add_minutes';
+import * as addHours from 'date-fns/add_hours';
+import * as addDays from 'date-fns/add_days';
+import * as addWeeks from 'date-fns/add_weeks';
+import * as addMonths from 'date-fns/add_months';
 @Component({
 	selector: 'app-prescribe-drug',
 	templateUrl: './prescribe-drug.component.html',
@@ -29,26 +24,19 @@ export class PrescribeDrugComponent implements OnInit {
 	@Input() patientDetails: any;
 	@Input() selectedAppointment: Appointment = <Appointment>{};
 	drugSearch = false;
-	priorities: string[] = [];
 	dosageUnits: any[] = [];
-	prescriptions: Prescription = <Prescription>{};
-	prescriptionArray: PrescriptionItem[] = [];
 	drugs: string[] = [];
 	routes: string[] = [];
 	frequencies: any[] = [];
 	durationUnits: any[] = [];
-	selectedValue: any;
 	selectedDosage: any;
 	products: any[] = [];
 	commonProducts: any[] = [];
 
 	addPrescriptionForm: FormGroup;
-	allPrescriptionsForm: FormGroup;
 
 	selectedFacility: any;
-	subscription: any;
 	checkingStore: any;
-	loginEmployee: any;
 	searchHasBeenDone = false;
 	selectedProductName: any = '';
 	selectedProduct: any;
@@ -61,20 +49,11 @@ export class PrescribeDrugComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private _locker: CoolLocalStorage,
-		private _priorityService: PrescriptionPriorityService,
 		private _frequencyService: FrequencyService,
 		private _authFacadeService: AuthFacadeService,
-		private _systemModuleService: SystemModuleService,
 		private _drugListApiService: DrugListApiService,
 		private _drugInteractionService: DrugInteractionService
-	) {
-		this._authFacadeService.getLogingEmployee().then((payload: any) => {
-			this.loginEmployee = payload;
-			this._getCommonlyPrescribedDrugs();
-			this._getAllFrequencies();
-			this._getAllPriorities();
-		});
-	}
+	) {}
 	ngOnInit() {
 		this._authFacadeService
 			.getLogingEmployee()
@@ -88,10 +67,12 @@ export class PrescribeDrugComponent implements OnInit {
 					patientId: this.patientDetails._id,
 					personId: this.patientDetails.personId,
 					prescriptionItems: [],
-					isAuthorised: true,
+					isAuthorised: false,
 					totalCost: 0,
 					totalQuantity: 0
 				};
+				this._getCommonlyPrescribedDrugs();
+				this._getAllFrequencies();
 			})
 			.catch((err) => {});
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
@@ -99,7 +80,6 @@ export class PrescribeDrugComponent implements OnInit {
 		this.prescriptionItems.prescriptionItems = [];
 		this.durationUnits = DurationUnits;
 		this.dosageUnits = DosageUnits;
-		this.selectedValue = DurationUnits[1].name;
 		this.selectedDosage = DosageUnits[0].name;
 
 		this.addPrescriptionForm = this.fb.group({
@@ -113,6 +93,8 @@ export class PrescribeDrugComponent implements OnInit {
 			endDate: [ new Date().toISOString().substring(0, 10), [] ],
 			specialInstruction: [ '' ]
 		});
+
+		this.subscribeToRegimen(0);
 
 		this.addPrescriptionForm.controls['drug'].valueChanges
 			.distinctUntilChanged()
@@ -162,35 +144,57 @@ export class PrescribeDrugComponent implements OnInit {
 		});
 	}
 
+	subscribeToRegimen(index) {
+		const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
+		(<FormGroup>control.controls[index]).controls['duration'].valueChanges.subscribe((value) => {
+			const endDate = this.getEndDate((<FormGroup>control.controls[index]).controls['durationUnit'].value, value);
+			this.addPrescriptionForm.controls['endDate'].setValue(endDate.toISOString().substring(0, 10));
+		});
+
+		(<FormGroup>control.controls[index]).controls['durationUnit'].valueChanges.subscribe((value) => {
+			const endDate = this.getEndDate(value, (<FormGroup>control.controls[index]).controls['duration'].value);
+			this.addPrescriptionForm.controls['endDate'].setValue(endDate.toISOString().substring(0, 10));
+		});
+	}
+
+	getEndDate(unit, value) {
+		const date = this.addPrescriptionForm.controls['startDate'].value;
+		switch (unit) {
+			case 'Minutes':
+				return addMinutes(date, value);
+			case 'Hours':
+				return addHours(date, value);
+			case 'Days':
+				return addDays(date, value);
+			case 'Weeks':
+				return addWeeks(date, value);
+			case 'Months':
+				return addMonths(date, value);
+			default:
+				break;
+		}
+	}
+
 	initRegimen() {
 		return this.fb.group({
 			dosage: [ '', [ <any>Validators.required ] ],
-			frequency: [ this.frequencies[0], [ <any>Validators.required ] ],
+			frequency: [
+				this.frequencies[0] === undefined ? '' : this.frequencies[0].name,
+				[ <any>Validators.required ]
+			],
 			duration: [ 0, [ <any>Validators.required ] ],
-			durationUnit: [ this.durationUnits[1], [ <any>Validators.required ] ]
+			durationUnit: [ this.durationUnits[1].name, [ <any>Validators.required ] ]
 		});
 	}
 
 	onClickAddRegimen() {
 		const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
 		control.push(this.initRegimen());
+		this.subscribeToRegimen(control.length - 1);
 	}
 
 	canSearchBeDone(list: any[]) {
 		return list.filter((value) => value.trim().length > 4).map((l) => l.trim());
-	}
-
-	private _getAllPriorities() {
-		this._priorityService
-			.findAll()
-			.then((res) => {
-				this.priorities = res.data;
-				const priority = res.data.filter((x) => x.name.toLowerCase().includes('normal'));
-				if (priority.length > 0) {
-					this.allPrescriptionsForm.controls['priority'].setValue(priority[0]);
-				}
-			})
-			.catch((err) => {});
 	}
 
 	private _getCommonlyPrescribedDrugs() {
@@ -198,7 +202,7 @@ export class PrescribeDrugComponent implements OnInit {
 			.find_commonly_prescribed({
 				query: {
 					facilityId: this.selectedFacility._id,
-					personId: this.loginEmployee.personId
+					personId: this.employeeDetails.personId
 				}
 			})
 			.then((res) => {
@@ -215,7 +219,7 @@ export class PrescribeDrugComponent implements OnInit {
 					this.frequencies = res.data;
 					const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
 					if (this.frequencies.length > 0) {
-						(<FormGroup>control.controls[0]).controls['frequency'].setValue(this.frequencies[0]);
+						(<FormGroup>control.controls[0]).controls['frequency'].setValue(this.frequencies[0].name);
 					}
 				}
 			})
@@ -263,7 +267,7 @@ export class PrescribeDrugComponent implements OnInit {
 		if (this.validateAgainstDuplicateProductEntry(event.product)) {
 			const commonDrug = {
 				facilityId: this.selectedFacility._id,
-				personId: this.loginEmployee.personId,
+				personId: this.employeeDetails.personId,
 				productObject: event.product
 			};
 			const createdCommonlyPrescribed = await this._drugListApiService.create_commonly_prescribed(commonDrug);
@@ -294,8 +298,12 @@ export class PrescribeDrugComponent implements OnInit {
 		item.isRefill = this.addPrescriptionForm.controls['refill'].value;
 		item.refillCount = this.addPrescriptionForm.controls['refillCount'].value;
 		item.code = this.addPrescriptionForm.controls['code'].value;
+		item.patientInstruction = this.addPrescriptionForm.controls['specialInstruction'].value;
+		item.startDate = this.addPrescriptionForm.controls['startDate'].value;
+		item.endDate = this.addPrescriptionForm.controls['endDate'].value;
 		item.totalCost = 0;
 		item.cost = 0;
+		item.regimen = this.addPrescriptionForm.controls['regimenArray'].value;
 
 		this.currentPrescription.prescriptionItems.push(item);
 		this._drugInteractionService.checkDrugInteractions(this.currentPrescription.prescriptionItems);
@@ -306,15 +314,31 @@ export class PrescribeDrugComponent implements OnInit {
 		this.addPrescriptionForm.controls['drug'].reset();
 		this.addPrescriptionForm.controls['startDate'].setValue(new Date().toISOString().substring(0, 10));
 		this.addPrescriptionForm.controls['endDate'].setValue(new Date().toISOString().substring(0, 10));
+		this.addPrescriptionForm.controls['refill'].setValue(false);
+		this.addPrescriptionForm.controls['refillCount'].setValue(0);
 		this.addPrescriptionForm.controls['specialInstruction'].reset();
 		const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
 		if (this.frequencies.length > 0) {
-			(<FormGroup>control.controls[0]).controls['frequency'].setValue(this.frequencies[0]);
+			(<FormGroup>control.controls[0]).controls['frequency'].setValue(this.frequencies[0].name);
 		}
 		if (this.durationUnits.length > 0) {
-			(<FormGroup>control.controls[0]).controls['durationUnit'].setValue(this.durationUnits[1]);
+			(<FormGroup>control.controls[0]).controls['durationUnit'].setValue(this.durationUnits[1].name);
 		}
 		(<FormGroup>control.controls[0]).controls['duration'].setValue(0);
 		(<FormGroup>control.controls[0]).controls['dosage'].setValue('');
+	}
+	startPrescription(event) {
+		this.currentPrescription = <Prescription>{
+			facilityId: this.selectedFacility._id,
+			employeeId: this.employeeDetails._id,
+			clinicId: !!this.selectedAppointment.clinicId ? this.selectedAppointment.clinicId : undefined,
+			priority: '',
+			patientId: this.patientDetails._id,
+			personId: this.patientDetails.personId,
+			prescriptionItems: [],
+			isAuthorised: false,
+			totalCost: 0,
+			totalQuantity: 0
+		};
 	}
 }

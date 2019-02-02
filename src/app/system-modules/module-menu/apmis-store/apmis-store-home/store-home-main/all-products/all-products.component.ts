@@ -1,5 +1,5 @@
 import { InventoryService } from './../../../../../../services/facility-manager/setup/inventory.service';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, OnDestroy } from '@angular/core';
 import { Facility, Employee } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { StoreGlobalUtilService } from '../../../store-utils/global-service';
@@ -7,13 +7,14 @@ import { ProductsToggle } from '../../../store-utils/global';
 import { EmployeeService } from 'app/services/facility-manager/setup';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
 	selector: 'app-all-products',
 	templateUrl: './all-products.component.html',
 	styleUrls: [ './all-products.component.scss' ]
 })
-export class AllProductsComponent implements OnInit {
+export class AllProductsComponent implements OnInit, OnDestroy {
 	showAdjustStock = false;
 	showProductDistribution = false;
 	clickItemIndex: number;
@@ -28,7 +29,7 @@ export class AllProductsComponent implements OnInit {
 	products: any = [];
 	productToggles = [];
 	selectedToggleIndex = 0;
-	subscription: any;
+	subscription: Subscription;
 	checkingStore: any = <any>{};
 	loginEmployee: Employee = <Employee>{};
 	workSpace: any;
@@ -104,6 +105,10 @@ export class AllProductsComponent implements OnInit {
 		this.productToggles = this.storeUtilService.getObjectKeys(ProductsToggle);
 	}
 
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+	}
+
 	getInventoryList() {
 		this._inventoryService
 			.findFacilityProductList({
@@ -116,12 +121,19 @@ export class AllProductsComponent implements OnInit {
 			})
 			.then(
 				(payload) => {
-					this.products = payload.data;
+					this.products = this.modifyProducts(payload.data);
 					this.numberOfPages = payload.total / this.limit;
 					this.total = payload.total;
 				},
 				(error) => {}
 			);
+	}
+
+	modifyProducts(products: any[]) {
+		return products.map((product) => {
+			product.virtualAvailableQuantity = product.availableQuantity;
+			return product;
+		});
 	}
 
 	item_to_show(i) {
@@ -156,5 +168,10 @@ export class AllProductsComponent implements OnInit {
 	}
 	setSelectedToggle(index, toggle) {
 		this.selectedToggleIndex = index;
+	}
+
+	itemChanged(event, product) {
+		const selectedConfig = product.packSizes.find((x) => x.name === event.target.value);
+		product.virtualAvailableQuantity = product.availableQuantity / selectedConfig.size;
 	}
 }

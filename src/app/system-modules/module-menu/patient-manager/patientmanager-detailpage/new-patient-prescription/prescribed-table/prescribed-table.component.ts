@@ -1,6 +1,6 @@
 import { DrugListApiService } from './../../../../../../services/facility-manager/setup/drug-list-api.service';
 import { DrugInteractionService } from './../services/drug-interaction.service';
-import { Component, OnInit, Output, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, Input, OnDestroy, EventEmitter } from '@angular/core';
 import { Prescription, PrescriptionItem, Facility, Appointment } from 'app/models';
 import { Subscription } from 'rxjs';
 import { PrescriptionPriorityService, PrescriptionService } from 'app/services/facility-manager/setup';
@@ -17,6 +17,7 @@ export class PrescribedTableComponent implements OnInit, OnDestroy {
 	@Input() currentPrescription: Prescription = <Prescription>{};
 	@Input() selectedAppointment: Appointment = <Appointment>{};
 	@Input() patientDetails: any;
+	@Output() startPrescription: EventEmitter<any> = new EventEmitter<any>();
 	billShow = false;
 	subscription: Subscription;
 	priorities: any[] = [];
@@ -30,7 +31,8 @@ export class PrescribedTableComponent implements OnInit, OnDestroy {
 		private _priorityService: PrescriptionPriorityService,
 		private _drugListService: DrugListApiService,
 		private _systemModuleService: SystemModuleService,
-		private _prescriptionService: PrescriptionService
+		private _prescriptionService: PrescriptionService,
+		private _locker: CoolLocalStorage
 	) {
 		this.subscription = this._drugInteractionService.currentInteraction.subscribe((value) => {
 			if (
@@ -46,6 +48,7 @@ export class PrescribedTableComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this._getAllPriorities();
+		this.facility = <Facility>this._locker.getObject('selectedFacility');
 	}
 
 	private _getAllPriorities() {
@@ -57,7 +60,6 @@ export class PrescribedTableComponent implements OnInit, OnDestroy {
 				if (_innerPriorities.length > 0) {
 					this.currentPrescription.priority = { id: _innerPriorities[0]._id, name: _innerPriorities[0].name };
 					this.selectedPriority = _innerPriorities[0];
-					console.log(this.selectedPriority);
 				}
 			})
 			.catch((err) => {});
@@ -83,12 +85,12 @@ export class PrescribedTableComponent implements OnInit, OnDestroy {
 	}
 	authorizePrescription() {
 		this.currentPrescription.priority = { id: this.selectedPriority._id, name: this.selectedPriority.name };
-		console.log(this.currentPrescription);
+		this.currentPrescription.isAuthorised = true;
 		this._prescriptionService
 			.authorizePresciption(this.currentPrescription)
 			.then((res) => {
-				console.log(res);
 				if (res.status === 'success') {
+					this.startPrescription.emit(this.currentPrescription);
 					this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success');
 				} else {
 					this._systemModuleService.announceSweetProxy(
@@ -97,8 +99,6 @@ export class PrescribedTableComponent implements OnInit, OnDestroy {
 					);
 				}
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			.catch((err) => {});
 	}
 }

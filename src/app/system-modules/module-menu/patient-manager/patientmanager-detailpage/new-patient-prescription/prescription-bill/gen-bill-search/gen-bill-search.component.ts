@@ -14,6 +14,7 @@ export class GenBillSearchComponent implements OnInit {
 	@Input() stores = [];
 	@Input() selectedDrug: PrescriptionItem = <PrescriptionItem>{};
 	@Output() searchResultEvent: EventEmitter<any> = new EventEmitter<any>();
+	@Output() closeModalEvent: EventEmitter<any> = new EventEmitter<any>();
 	selectedFacility: any;
 	selectedStore: any;
 	drugPicked: any;
@@ -55,7 +56,6 @@ export class GenBillSearchComponent implements OnInit {
 	}
 
 	onItemChange(drug) {
-		console.log(drug);
 		this.drugPicked = drug;
 		this.selectedConfig = this.drugPicked.productObject.productConfigObject.find((x) => x.isBase === true);
 		this.quantityToDispense.setValue(drug.availableQuantity);
@@ -69,7 +69,6 @@ export class GenBillSearchComponent implements OnInit {
 	}
 
 	bill() {
-		console.log('am in');
 		const product = {
 			id: this.drugPicked.productObject.id,
 			code: this.drugPicked.productObject.code,
@@ -86,8 +85,6 @@ export class GenBillSearchComponent implements OnInit {
 		this.selectedDrug.totalCost = this.drugPicked.price.price * this.quantityToDispense.value;
 		this.selectedDrug.isBilled = true;
 		this.selectedDrug.facilityId = this.selectedFacility._id;
-		console.log(this.selectedDrug);
-		// this.prescriptionData.totalCost += this.totalCost;
-		// this.prescriptionData.totalQuantity += this.totalQuantity;
+		this.closeModalEvent.emit(true);
 	}
 }

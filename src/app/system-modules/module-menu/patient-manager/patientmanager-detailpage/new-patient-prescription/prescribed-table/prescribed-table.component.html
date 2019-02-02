@@ -12,9 +12,18 @@
     <tbody>
       <tr class="th-xxx" *ngFor="let item of currentPrescription.prescriptionItems; let i = index">
         <td>{{i+1}}</td>
-        <td>{{item.genericName}}
+        <td>{{item.genericName}}<br>
+          <span *ngFor="let reg of item?.regimen">
+            {{reg?.dosage }} - {{reg?.frequency }} for {{ reg?.duration }} {{ reg?.durationUnit }},
+          </span>
+          {{ item?.routeName }} ({{item.refillCount }})
+          <br>
+          <span *ngIf="item.isBilled" style="color:#2e7d32;">
+            Drug: {{ item?.productName?.name }}, Quantity: {{ item?.quantity }}, Unit
+            Price: {{item?.cost }}, Cost: {{ item?.totalCost }}
+          </span>
           <div class="td-wrap">
-            <div class="caution-note">
+            <!-- <div class="caution-note">
               <i class="fa fa-exclamation-circle"></i>
               <i class="">Patient is allergic to benzoin </i>
               <i>View</i>
@@ -28,13 +37,13 @@
               <i class="fa fa-exclamation-circle"></i>
               <i class="">Duplicate Prescription</i>
               <i>View</i>
-            </div>
-            <div class="ft-btn  disabled">
+            </div> -->
+            <div *ngIf="item.isRefill === true" class="ft-btn  disabled">
               <span>Refill</span>
             </div>
           </div>
         </td>
-        <td></td>
+        <td class="align-top">{{item.patientInstruction}}</td>
         <td>
           <div class="action-tbl">
             <div class="btn-tbl" (click)="onBillShow(item)">

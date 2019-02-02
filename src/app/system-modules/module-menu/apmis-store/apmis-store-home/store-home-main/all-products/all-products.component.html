@@ -30,15 +30,15 @@
         <div class="store-tr-in">
           <div class="store-td">{{product.productName}}</div>
           <div class="store-td">
-            <span class="spc-lft">{{product.availableQuantity| number}}</span>
-            <select>
-              <option *ngFor="let pack of packTypes" value="{{pack.id}}">{{pack.name}}</option>
+            <span class="spc-lft">{{product.virtualAvailableQuantity| number}}</span>
+            <select (change)="itemChanged($event, product)">
+              <option *ngFor="let pack of product.packSizes" [ngValue]="pack">{{pack.name}}</option>
             </select>
           </div>
-          <div class="store-td">{{product.reOrderLevel}} Sachets</div>
+          <div class="store-td">{{product.reOrderLevel}} {{product.productConfiguration.name}}</div>
           <!-- <div class="store-td">#5/Sachet</div>
           <div class="store-td">#300,000</div> -->
-          <div class="store-td">&#8358;{{product.price}}/Sachet</div>
+          <div class="store-td">&#8358;{{product.price}}/{{product.productConfiguration.name}}</div>
         </div>
         <!-- <div class="store-td store-td-actions">
           <i class="fa fa-ellipsis-v"></i>
