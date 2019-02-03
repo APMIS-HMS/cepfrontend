@@ -4,7 +4,7 @@
         <legend class="modal_title">{{document?.document?.documentType?.title}}</legend>
         <div class="modal_mini_title">{{document?.facilityId?.name}}</div>
     </div>
-    <div class="modal-baseWrap">
+    <div class="modal-baseWrap" id="printNote">
         <div class="docCard-header">
             <div class="empWrap">
                 <div class="list-img">
@@ -33,6 +33,7 @@
             <div class="docCard-body">
                 <div class="docCard-ctaWrap">
                     <i class="edit-ico-color fa fa-pencil-square" aria-hidden="true"></i>
+                    <i class="edit-ico-color fa fa-print" (click)="doc_Print()" aria-hidden="true"></i>
                     <i class="del-ico-color fa fa-trash" aria-hidden="true"></i>
                 </div>
 
