@@ -881,7 +881,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 					-webkit-box-sizing: border-box;
 					box-sizing: border-box;
 				}
-				
+				.topmenuwrap{
+					display: none !important;
+				}
 				.empWrap {
 					display: -webkit-box;
 					display: -ms-flexbox;
@@ -893,6 +895,39 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 					-ms-flex-align: center;
 					align-items: center;
 					cursor: pointer;
+				}
+
+				.sect-value{
+					line-height: 1.7;
+					margin-left: 10px;
+					margin-right: 10px;
+					text-align: justify;
+				}
+				
+				table {
+					width: 100%;
+					position: relative;
+					border-collapse: collapse;
+					font-size: 1.2rem;
+					border: 0.5px solid #ddd;
+				}
+				
+				
+				th {
+					font-size: 1.5rem;
+					text-align: left;
+					font-weight: normal;
+					color: #ff2500;
+					border-bottom: 1px solid #ff2500;
+					height: 0px;
+					background: rgba(255, 255, 255, 0.15);
+					border: 0.5px solid rgba(255, 255, 255, 0.15);
+				}
+				
+				td{
+					border: 0px solid transparent;
+					text-align: left;
+					padding: 5px;
 				}
 				
 				.list-img{
